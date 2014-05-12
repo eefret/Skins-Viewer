@@ -14,14 +14,49 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
             android:name="com.chrslee.csgoskins.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Rifles"
+            android:label="@string/title_activity_rifles"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.SMGs"
+            android:label="@string/title_activity_smgs"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Heavy"
+            android:label="@string/title_activity_heavy"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Pistols"
+            android:label="@string/title_activity_pistols"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Knives"
+            android:label="@string/title_activity_knives"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Maps"
+            android:label="@string/title_activity_maps"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.chrslee.csgoskins.Cases"
+            android:label="@string/title_activity_cases"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         </activity>
     </application>
 

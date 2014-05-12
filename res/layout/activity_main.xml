@@ -9,7 +9,7 @@
     tools:context="com.chrslee.csgoskins.MainActivity$PlaceholderFragment" >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/csgoskins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -17,72 +17,73 @@
         android:layout_marginTop="16dp"
         android:text="@string/csgo_skins"
         android:textSize="45sp" />
+    
+    <TextView
+        android:id="@+id/viewby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/csgoskins"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:text="@string/view_skins"
+        android:textSize="36sp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/rifles_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/viewby"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/rifles" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/smgs_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/rifles_button"
         android:layout_centerHorizontal="true"
         android:text="@string/smgs" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/heavy_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/smgs_button"
         android:layout_centerHorizontal="true"
         android:text="@string/heavy" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/pistols_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button3"
+        android:layout_below="@+id/heavy_button"
         android:layout_centerHorizontal="true"
         android:text="@string/pistols" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/knives_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button4"
+        android:layout_below="@+id/pistols_button"
         android:layout_centerHorizontal="true"
         android:text="@string/knives" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/maps_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button5"
+        android:layout_below="@+id/knives_button"
         android:layout_centerHorizontal="true"
         android:text="@string/maps" />
     
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/cases_button"
         android:layout_width="250sp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button6"
+        android:layout_below="@+id/maps_button"
         android:layout_centerHorizontal="true"
         android:text="@string/cases" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:text="@string/view_skins"
-        android:textSize="36sp" />
 
 </RelativeLayout>
