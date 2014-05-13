@@ -23,6 +23,11 @@ public class Cases extends ActionBarActivity {
         scrollChild.addView(getCaseView("ESports 2013 Case", R.drawable.esports_2013_case));
         scrollChild.addView(getCaseView("Bravo Weapon Case", R.drawable.bravo_case));
         scrollChild.addView(getCaseView("Weapon Case 2", R.drawable.weapon_case_two));
+        scrollChild.addView(getCaseView("Winter Offensive Weapon Case", R.drawable.winter_offensive_case));
+        scrollChild.addView(getCaseView("ESports Winter Case", R.drawable.esports_winter_case));
+        scrollChild.addView(getCaseView("Weapon Case 3", R.drawable.weapon_case_three));
+        scrollChild.addView(getCaseView("Operation Phoenix Case", R.drawable.phoenix_case));
+        scrollChild.addView(getCaseView("The Huntsman Case", R.drawable.huntsman_case));
     }
 
 
