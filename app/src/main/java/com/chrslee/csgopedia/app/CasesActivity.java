@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class Cases extends ActionBarActivity {
+public class CasesActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +19,16 @@ public class Cases extends ActionBarActivity {
         setContentView(R.layout.activity_cases);
 
         LinearLayout scrollChild = (LinearLayout) findViewById(R.id.casesScrollChild);
-        scrollChild.addView(getCaseView("CS:GO Weapon Case", R.drawable.csgo_weapon_case));
-        scrollChild.addView(getCaseView("ESports 2013 Case", R.drawable.esports_2013_case));
-        scrollChild.addView(getCaseView("Bravo Weapon Case", R.drawable.bravo_case));
+        scrollChild.addView(getCaseView("Weapon Case 1", R.drawable.csgo_weapon_case));
+        scrollChild.addView(getCaseView("eSports 2013 Case", R.drawable.esports_2013_case));
+        scrollChild.addView(getCaseView("Bravo Case", R.drawable.bravo_case));
         scrollChild.addView(getCaseView("Weapon Case 2", R.drawable.weapon_case_two));
+        scrollChild.addView(getCaseView("Winter eSports 2013-14 Case", R.drawable.esports_winter_case));
+        scrollChild.addView(getCaseView("Winter Offensive Case", R.drawable.winter_offensive_case));
+        scrollChild.addView(getCaseView("Weapon Case 3", R.drawable.weapon_case_three));
+        scrollChild.addView(getCaseView("Phoenix Case", R.drawable.phoenix_case));
+        scrollChild.addView(getCaseView("Huntsman Case", R.drawable.huntsman_case));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,25 +1,24 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class Heavy extends ActionBarActivity {
+public class PistolsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_heavy);
+        setContentView(R.layout.activity_pistols);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.heavy, menu);
+        getMenuInflater().inflate(R.menu.pistols, menu);
         return true;
     }
 

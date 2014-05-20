@@ -1,25 +1,24 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class SMGs extends ActionBarActivity {
+public class MapsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smgs);
+        setContentView(R.layout.activity_maps);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.smgs, menu);
+        getMenuInflater().inflate(R.menu.maps, menu);
         return true;
     }
 

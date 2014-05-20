@@ -1,13 +1,21 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.chrslee.csgopedia.app.util.Rifle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
         riflesButton = (Button) findViewById(R.id.rifles_button);
         riflesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Rifles.class);
+                Intent intent = new Intent(MainActivity.this, RiflesActivity.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         smgsButton = (Button) findViewById(R.id.smgs_button);
         smgsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SMGs.class);
+                Intent intent = new Intent(MainActivity.this, SMGsActivity.class);
                 startActivity(intent);
             }
         });
@@ -44,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
         heavyButton = (Button) findViewById(R.id.heavy_button);
         heavyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Heavy.class);
+                Intent intent = new Intent(MainActivity.this, HeavyActivity.class);
                 startActivity(intent);
             }
         });
@@ -52,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         pistolsButton = (Button) findViewById(R.id.pistols_button);
         pistolsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Pistols.class);
+                Intent intent = new Intent(MainActivity.this, PistolsActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
         knivesButton = (Button) findViewById(R.id.knives_button);
         knivesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Knives.class);
+                Intent intent = new Intent(MainActivity.this, KnivesActivity.class);
                 startActivity(intent);
             }
         });
@@ -68,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
         mapsButton = (Button) findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Maps.class);
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,12 +84,11 @@ public class MainActivity extends ActionBarActivity {
         casesButton = (Button) findViewById(R.id.cases_button);
         casesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Cases.class);
+                Intent intent = new Intent(MainActivity.this, CasesActivity.class);
                 startActivity(intent);
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

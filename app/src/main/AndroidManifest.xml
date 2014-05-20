@@ -17,37 +17,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Rifles"
+            android:name=".RiflesActivity"
             android:label="@string/title_activity_rifles"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.SMGs"
+            android:name=".SMGsActivity"
             android:label="@string/title_activity_smgs"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Heavy"
+            android:name=".HeavyActivity"
             android:label="@string/title_activity_heavy"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Pistols"
+            android:name=".PistolsActivity"
             android:label="@string/title_activity_pistols"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Knives"
+            android:name=".KnivesActivity"
             android:label="@string/title_activity_knives"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Maps"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.AppCompat" >
         </activity>
         <activity
-            android:name="com.chrslee.csgopedia.app.Cases"
+            android:name=".CasesActivity"
             android:label="@string/title_activity_cases"
             android:theme="@style/Theme.AppCompat">
         </activity>
