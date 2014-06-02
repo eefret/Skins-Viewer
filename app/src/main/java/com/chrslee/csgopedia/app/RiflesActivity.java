@@ -45,11 +45,11 @@ public class RiflesActivity extends ActionBarActivity {
         myRifles.add(new Rifle("SG 553", R.drawable.sg553, "$3000"));
         myRifles.add(new Rifle("SSG 08", R.drawable.scout, "$2000"));
     }
-    //Adapter for listview
+
     private void populateListView() {
         ArrayAdapter<Rifle> adapter = new MyListAdapter(); //Array adapter for Rifle objects
         ListView list = (ListView) findViewById(R.id.rifles_listView); //Set up list
-        list.setAdapter(adapter);
+        list.setAdapter(adapter); //assign adapter to ListView
     }
     //finish this. open new activity when a rifle is clicked
     private void registerClickCallback() {
@@ -61,16 +61,17 @@ public class RiflesActivity extends ActionBarActivity {
             }
         });
     }
-
+    //Adapter for listview. Adapter inflates the layout for each row in its getview() method
+    //and assigns the data to the individual views in the row. adapter takes an Array and converts the items into View objects to be loaded into the ListView container.
     private class MyListAdapter extends ArrayAdapter<Rifle> {
-        public MyListAdapter() {
+        public MyListAdapter() { //constructor
             super(RiflesActivity.this, R.layout.item_view, myRifles);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //Make sure we have a view to work with (may have been given null)
-            View itemView = convertView;
+            View itemView = convertView; //?
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
             }

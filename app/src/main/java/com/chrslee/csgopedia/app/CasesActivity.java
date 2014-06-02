@@ -23,19 +23,11 @@ public class CasesActivity extends ActionBarActivity {
         scrollChild.addView(getCaseView("eSports 2013 Case", R.drawable.esports_2013_case));
         scrollChild.addView(getCaseView("Bravo Case", R.drawable.bravo_case));
         scrollChild.addView(getCaseView("Weapon Case 2", R.drawable.weapon_case_two));
-<<<<<<< HEAD:app/src/main/java/com/chrslee/csgopedia/app/CasesActivity.java
         scrollChild.addView(getCaseView("Winter eSports 2013-14 Case", R.drawable.esports_winter_case));
         scrollChild.addView(getCaseView("Winter Offensive Case", R.drawable.winter_offensive_case));
         scrollChild.addView(getCaseView("Weapon Case 3", R.drawable.weapon_case_three));
         scrollChild.addView(getCaseView("Phoenix Case", R.drawable.phoenix_case));
         scrollChild.addView(getCaseView("Huntsman Case", R.drawable.huntsman_case));
-=======
-        scrollChild.addView(getCaseView("Winter Offensive Weapon Case", R.drawable.winter_offensive_case));
-        scrollChild.addView(getCaseView("ESports Winter Case", R.drawable.esports_winter_case));
-        scrollChild.addView(getCaseView("Weapon Case 3", R.drawable.weapon_case_three));
-        scrollChild.addView(getCaseView("Operation Phoenix Case", R.drawable.phoenix_case));
-        scrollChild.addView(getCaseView("The Huntsman Case", R.drawable.huntsman_case));
->>>>>>> 974cfcab5185a04f6bf8175d6b54ceac76756550:app/src/main/java/com/chrslee/csgopedia/app/Cases.java
     }
 
     @Override
