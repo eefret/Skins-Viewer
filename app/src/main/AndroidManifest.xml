@@ -17,39 +17,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RiflesActivity"
+            android:name=".ItemsActivity"
             android:label="@string/title_activity_rifles"
             android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".SMGsActivity"
-            android:label="@string/title_activity_smgs"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".HeavyActivity"
-            android:label="@string/title_activity_heavy"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".PistolsActivity"
-            android:label="@string/title_activity_pistols"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".KnivesActivity"
-            android:label="@string/title_activity_knives"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.AppCompat" >
-        </activity>
-        <activity
-            android:name=".CasesActivity"
-            android:label="@string/title_activity_cases"
-            android:theme="@style/Theme.AppCompat">
         </activity>
     </application>
 
