@@ -18,15 +18,13 @@ import java.io.OutputStream;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH;
-    private static String DB_NAME = "itemsDb";
+    private static String DB_NAME = "itemsDB";
     private SQLiteDatabase myDatabase;
     private final Context myContext;
 
     /**
      * Constructor
      * Takes and keeps a reference of the passed context in order to access the application assets and resources.
-     *
-     * @param context
      */
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
