@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         riflesButton = (Button) findViewById(R.id.rifles_button);
         riflesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            intent.putExtra("itemType", "rifle");
+            intent.putExtra("itemType", "Rifle");
             startActivity(intent);
             }
         });
@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
         smgsButton = (Button) findViewById(R.id.smgs_button);
         smgsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            intent.putExtra("itemType", "smg");
+            intent.putExtra("itemType", "SMG");
             startActivity(intent);
             }
         });
@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
         heavyButton = (Button) findViewById(R.id.heavy_button);
         heavyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            intent.putExtra("itemType", "heavy");
+            intent.putExtra("itemType", "Heavy");
             startActivity(intent);
             }
         });
@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
         pistolsButton = (Button) findViewById(R.id.pistols_button);
         pistolsButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-            intent.putExtra("itemType", "pistol");
+            intent.putExtra("itemType", "Pistol");
             startActivity(intent);
             }
         });
@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
         knivesButton = (Button) findViewById(R.id.knives_button);
         knivesButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-            intent.putExtra("itemType", "knife");
+            intent.putExtra("itemType", "Knife");
             startActivity(intent);
             }
         });
@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
         mapsButton = (Button) findViewById(R.id.maps_button);
         mapsButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-            intent.putExtra("itemType", "map");
+            intent.putExtra("itemType", "Map");
             startActivity(intent);
             }
         });
@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
         casesButton = (Button) findViewById(R.id.cases_button);
         casesButton.setOnClickListener(new View.OnClickListener() {
         public void onClick(View v) {
-            intent.putExtra("itemType", "case");
+            intent.putExtra("itemType", "Case");
             startActivity(intent);
             }
         });

@@ -1,5 +1,7 @@
 package com.chrslee.csgopedia.app;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,18 +13,35 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.chrslee.csgopedia.app.util.Item;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
+    private HashMap<String, String> prices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
+
+        prices = new HashMap<String, String>();
+        prices.put("AK-47", "$2700");
+        prices.put("AUG", "$3300");
+        prices.put("AWP", "$4750");
+        prices.put("FAMAS", "$2250");
+        prices.put("Galil AR", "$2000");
+        prices.put("G3SG1", "$5000");
+        prices.put("M4A1-S", "$2900");
+        prices.put("M4A4", "$3100");
+        prices.put("SCAR-20", "$5000");
+        prices.put("SG 553", "$3000");
+        prices.put("SSG 08", "$2000");
 
         Bundle extras = getIntent().getExtras();
         populateListWith(extras.getString("itemType"));
@@ -39,12 +58,29 @@ public class ItemsActivity extends ActionBarActivity {
         MAP,
         CASE
     }
-    //Populate the arraylist with all of the rifles
+
+    //Populate the arraylist with all of the weapons
+    // TODO: Understand SQLiteOpenHelper class
     private void populateListWith(String itemType) {
         ItemTypes type = ItemTypes.valueOf(itemType.toUpperCase());
 
+        ItemsDatabase db = new ItemsDatabase(this);
+        SQLiteDatabase sqlDB = db.getReadableDatabase();
+
+        // Add values to String[] to avoid query concatenation
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ?", new String[]{itemType});
+
         switch (type) {
             case RIFLE:
+                while (cursor.moveToNext()) {
+                    String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
+                    // Turn String reference id into int value
+                    int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")), "drawable", this.getPackageName());
+                    String price = prices.get(weaponName);
+
+                    myItems.add(new Item(weaponName, imageRef, price));
+                }
+                /*
                 myItems.add(new Item("AK-47", R.drawable.ak47, "$2700"));
                 myItems.add(new Item("AUG", R.drawable.aug, "$3300"));
                 myItems.add(new Item("AWP", R.drawable.awp, "$4750"));
@@ -56,6 +92,7 @@ public class ItemsActivity extends ActionBarActivity {
                 myItems.add(new Item("SCAR-20", R.drawable.scar20, "$5000"));
                 myItems.add(new Item("SG 553", R.drawable.sg553, "$3000"));
                 myItems.add(new Item("SSG 08", R.drawable.scout, "$2000"));
+                */
                 break;
             case SMG:
                 // TODO: fill remaining items
@@ -77,7 +114,6 @@ public class ItemsActivity extends ActionBarActivity {
                 myItems.add(new Item("Generic Case", R.drawable.scar20, "$7777"));
                 break;
         }
-
     }
 
     private void populateListView() {
@@ -85,6 +121,7 @@ public class ItemsActivity extends ActionBarActivity {
         ListView list = (ListView) findViewById(R.id.items_listView); //Set up list
         list.setAdapter(adapter); //assign adapter to ListView
     }
+
     //finish this. open new activity when an item is clicked
     private void registerClickCallback() {
         ListView list = (ListView) findViewById(R.id.items_listView);
@@ -95,6 +132,7 @@ public class ItemsActivity extends ActionBarActivity {
             }
         });
     }
+
     //Adapter for listview. Adapter inflates the layout for each row in its getview() method
     //and assigns the data to the individual views in the row. adapter takes an Array and converts the items into View objects to be loaded into the ListView container.
     private class MyListAdapter extends ArrayAdapter<Item> {
