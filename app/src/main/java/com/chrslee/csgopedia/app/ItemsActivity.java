@@ -1,8 +1,10 @@
 package com.chrslee.csgopedia.app;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,25 +28,11 @@ import java.util.List;
 
 public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
-    private HashMap<String, String> prices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
-
-        prices = new HashMap<String, String>();
-        prices.put("AK-47", "$2700");
-        prices.put("AUG", "$3300");
-        prices.put("AWP", "$4750");
-        prices.put("FAMAS", "$2250");
-        prices.put("Galil AR", "$2000");
-        prices.put("G3SG1", "$5000");
-        prices.put("M4A1-S", "$2900");
-        prices.put("M4A4", "$3100");
-        prices.put("SCAR-20", "$5000");
-        prices.put("SG 553", "$3000");
-        prices.put("SSG 08", "$2000");
 
         Bundle extras = getIntent().getExtras();
         String itemType = extras.getString("itemType");
@@ -60,20 +48,22 @@ public class ItemsActivity extends ActionBarActivity {
     //Populate the arraylist with all of the weapons
     // TODO: Understand SQLiteOpenHelper class
     private void populateListWith(String itemType) {
-        ItemsDatabase db = new ItemsDatabase(this);
-        SQLiteDatabase sqlDB = db.getReadableDatabase();
+        SQLiteDatabase sqlDB = ItemsDatabase.getInstance(this).getReadableDatabase();
 
         // Add values to String[] to avoid query concatenation
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ?", new String[]{itemType, "Regular"});
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ? ORDER BY Name ASC",
+                new String[]{itemType, "Regular"});
 
         while (cursor.moveToNext()) {
             String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
             // Get reference ID
-            int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")), "drawable", this.getPackageName());
-            String price = prices.get(weaponName);
+            int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
+                    "drawable", this.getPackageName());
+            String price = cursor.getString(cursor.getColumnIndex("Price"));
 
             myItems.add(new Item(weaponName, imageRef, price));
         }
+        cursor.close();
     }
 
     private void populateListView() {
@@ -109,19 +99,22 @@ public class ItemsActivity extends ActionBarActivity {
             }
 
             //Find the rifle to work with
-            Item currentRifle = myItems.get(position);
+            Item currentItem = myItems.get(position);
 
             //Fill the view
             ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon); //Find icon view
-            imageView.setImageResource(currentRifle.getIconID());
+            imageView.setImageResource(currentItem.getIconID());
+
+            // or imageView.setImageDrawable(getResources().getDrawable(currentItem.getIconID()));
+            // setImageResource reads and decodes Bitmap on the UI thread
 
             //Rifle name:
             TextView nameText = (TextView) itemView.findViewById(R.id.item_name);
-            nameText.setText(currentRifle.getItemName());
+            nameText.setText(currentItem.getItemName());
 
             //Rifle price:
             TextView priceText = (TextView) itemView.findViewById(R.id.item_price);
-            priceText.setText(currentRifle.getPrice());
+            priceText.setText(currentItem.getPrice());
 
             return itemView;
         }
