@@ -1,9 +1,11 @@
 package com.chrslee.csgopedia.app;
 
+import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,62 +47,32 @@ public class ItemsActivity extends ActionBarActivity {
         prices.put("SSG 08", "$2000");
 
         Bundle extras = getIntent().getExtras();
-        populateListWith(extras.getString("itemType"));
-        populateListView();
-        registerClickCallback();
-    }
+        String itemType = extras.getString("itemType");
 
-    private enum ItemTypes {
-        RIFLE,
-        SMG,
-        HEAVY,
-        PISTOL,
-        KNIFE,
-        MAP,
-        CASE
+        populateListWith(itemType);
+        populateListView();
+
+        // Change title
+        getSupportActionBar().setTitle(itemType);
+        registerClickCallback();
     }
 
     //Populate the arraylist with all of the weapons
     // TODO: Understand SQLiteOpenHelper class
     private void populateListWith(String itemType) {
-        ItemTypes type = ItemTypes.valueOf(itemType.toUpperCase());
-
         ItemsDatabase db = new ItemsDatabase(this);
         SQLiteDatabase sqlDB = db.getReadableDatabase();
 
         // Add values to String[] to avoid query concatenation
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ?", new String[]{itemType, "Default"});
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ?", new String[]{itemType, "Regular"});
 
-        switch (type) {
-            case RIFLE:
-                while (cursor.moveToNext()) {
-                    String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
-                    // Turn String reference id into int value
-                    int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")), "drawable", this.getPackageName());
-                    String price = prices.get(weaponName);
+        while (cursor.moveToNext()) {
+            String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
+            // Get reference ID
+            int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")), "drawable", this.getPackageName());
+            String price = prices.get(weaponName);
 
-                    myItems.add(new Item(weaponName, imageRef, price));
-                }
-                break;
-            case SMG:
-                // TODO: fill remaining items
-                myItems.add(new Item("Generic SMG", R.drawable.scar20, "$2222"));
-                break;
-            case HEAVY:
-                myItems.add(new Item("Generic Heavy", R.drawable.scar20, "$3333"));
-                break;
-            case PISTOL:
-                myItems.add(new Item("Generic Pistol", R.drawable.scar20, "$4444"));
-                break;
-            case KNIFE:
-                myItems.add(new Item("Generic Knife", R.drawable.scar20, "$5555"));
-                break;
-            case MAP:
-                myItems.add(new Item("Generic Map", R.drawable.scar20, "$6666"));
-                break;
-            case CASE:
-                myItems.add(new Item("Generic Case", R.drawable.scar20, "$7777"));
-                break;
+            myItems.add(new Item(weaponName, imageRef, price));
         }
     }
 
