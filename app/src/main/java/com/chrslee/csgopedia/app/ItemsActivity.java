@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class ItemsActivity extends ActionBarActivity {
         SQLiteDatabase sqlDB = db.getReadableDatabase();
 
         // Add values to String[] to avoid query concatenation
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ?", new String[]{itemType});
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ?", new String[]{itemType, "Default"});
 
         switch (type) {
             case RIFLE:
@@ -80,19 +81,6 @@ public class ItemsActivity extends ActionBarActivity {
 
                     myItems.add(new Item(weaponName, imageRef, price));
                 }
-                /*
-                myItems.add(new Item("AK-47", R.drawable.ak47, "$2700"));
-                myItems.add(new Item("AUG", R.drawable.aug, "$3300"));
-                myItems.add(new Item("AWP", R.drawable.awp, "$4750"));
-                myItems.add(new Item("FAMAS", R.drawable.famas, "$2250"));
-                myItems.add(new Item("Galil AR", R.drawable.galil, "$2000"));
-                myItems.add(new Item("G3SG1", R.drawable.g3sg1, "$5000"));
-                myItems.add(new Item("M4A1-S", R.drawable.m4a1s, "$2900"));
-                myItems.add(new Item("M4A4", R.drawable.m4a4, "$3100"));
-                myItems.add(new Item("SCAR-20", R.drawable.scar20, "$5000"));
-                myItems.add(new Item("SG 553", R.drawable.sg553, "$3000"));
-                myItems.add(new Item("SSG 08", R.drawable.scout, "$2000"));
-                */
                 break;
             case SMG:
                 // TODO: fill remaining items

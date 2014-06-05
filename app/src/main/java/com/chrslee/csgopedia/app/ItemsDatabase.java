@@ -10,5 +10,6 @@ public class ItemsDatabase extends SQLiteAssetHelper {
 
     public ItemsDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        setForcedUpgrade(2); // force if version under 2
     }
 }
