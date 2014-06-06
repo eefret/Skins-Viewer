@@ -1,7 +1,6 @@
 package com.chrslee.csgopedia.app;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,7 +24,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent intent = new Intent(MainActivity.this, ItemsActivity.class);
+        final Intent intent = new Intent(this, ItemsActivity.class);
+        ItemsDatabase.getInstance(this).getReadableDatabase(); // load db in main menu
 
         riflesButton = (Button) findViewById(R.id.rifles_button);
         riflesButton.setOnClickListener(new View.OnClickListener() {
@@ -97,9 +97,6 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }

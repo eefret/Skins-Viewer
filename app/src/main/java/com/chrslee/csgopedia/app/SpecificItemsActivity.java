@@ -22,39 +22,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemsActivity extends ListActivity {
+public class SpecificItemsActivity extends ListActivity {
     private List<Item> myItems = new ArrayList<Item>();
-    private String itemType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
-        itemType = extras.getString("itemType");
+        String itemType = extras.getString("itemType"); // eg: Map
+        String itemName = extras.getString("itemName"); // eg: Aztec
 
-        populateListWith(itemType);
+        populateListWith(itemType, itemName);
 
         setListAdapter(new MobileArrayAdapter(this));
 
         // Change title
-        getActionBar().setTitle(itemType + " List");
+        getActionBar().setTitle(itemName + " Skins");
     }
 
-    // Populate the arraylist with all of the weapons
-    // TODO: Understand SQLiteOpenHelper class
-    private void populateListWith(String input) {
+    // Populate the arraylist with all of the skins
+    private void populateListWith(String itemType, String itemName) {
         SQLiteDatabase sqlDB = ItemsDatabase.getInstance(this).getReadableDatabase();
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ? ORDER BY Name ASC", new String[]{input, "Regular"});
+        Cursor cursor;
+
+        if (itemType.equals("Map")) {
+            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Map = ? ORDER BY Name ASC", new String[]{itemName});
+        } else if (itemType.equals("Case")) {
+            // Can't use "Case" as a field name since it's a restricted word.
+            // However, I will still use "Case" as a value for the "Type" field.
+            // Optionally, add "OR Box = 'All'" if you want to include the knife skins (drop from all boxes)
+            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Box = ? ORDER BY Name ASC", new String[]{itemName});
+        } else {
+            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Name = ? ORDER BY Skin ASC", new String[]{itemName});
+        }
 
         while (cursor.moveToNext()) {
-            String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
+            String skinName = cursor.getString(cursor.getColumnIndex("Skin"));
             // Get reference ID
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
                     "drawable", this.getPackageName());
-            String price = cursor.getString(cursor.getColumnIndex("Price"));
+            String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));
+            String weaponName;
 
-            myItems.add(new Item(weaponName, "", imageRef, price));
+            // Don't need to show weapon names for a list of skins of 1 weapon, show map/case instead.
+            if (itemType.equals("Map") || itemType.equals("Case")) {
+                weaponName = cursor.getString(cursor.getColumnIndex("Name"));
+            } else {
+                weaponName = cursor.getString(cursor.getColumnIndex("Map"));
+                if (weaponName.equals("")) {
+                    weaponName = cursor.getString(cursor.getColumnIndex("Box"));
+                }
+            }
+
+            // Put rarity in price field (temporary?)
+            myItems.add(new Item(skinName, weaponName, imageRef, rarity));
         }
         cursor.close();
     }
@@ -81,10 +103,12 @@ public class ItemsActivity extends ListActivity {
             ImageView icon = (ImageView) rowView.findViewById(R.id.item_icon);
             TextView name = (TextView) rowView.findViewById(R.id.item_name);
             TextView price = (TextView) rowView.findViewById(R.id.item_price);
+            TextView description = (TextView) rowView.findViewById(R.id.item_description);
 
             icon.setImageResource(currentItem.getIconID());
             name.setText(currentItem.getItemName());
             price.setText(currentItem.getPrice());
+            description.setText(currentItem.getDescription());
 
             return rowView;
         }
@@ -108,10 +132,11 @@ public class ItemsActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(this, SpecificItemsActivity.class);
-        intent.putExtra("itemName", myItems.get(position).getItemName());
-        intent.putExtra("itemType", itemType);
+        int iconID = myItems.get(position).getIconID();
 
-        startActivity(intent);
+        Intent fullScreenIntent = new Intent(this, FullScreenImage.class);
+        fullScreenIntent.putExtra("iconID", iconID);
+
+        startActivity(fullScreenIntent);
     }
 }
