@@ -47,12 +47,12 @@ public class SpecificItemsActivity extends ListActivity {
         Cursor cursor;
 
         if (itemType.equals("Map")) {
-            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Map = ? ORDER BY Name ASC", new String[]{itemName});
+            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Map = ? ORDER BY Skin ASC", new String[]{itemName});
         } else if (itemType.equals("Case")) {
             // Can't use "Case" as a field name since it's a restricted word.
             // However, I will still use "Case" as a value for the "Type" field.
-            // Optionally, add "OR Box = 'All'" if you want to include the knife skins (drop from all boxes)
-            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Box = ? ORDER BY Name ASC", new String[]{itemName});
+            // Optionally, add "OR Box = 'All'" if you want to include the knife skins (drop from all cases)
+            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Box = ? ORDER BY Skin ASC", new String[]{itemName});
         } else {
             cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Name = ? ORDER BY Skin ASC", new String[]{itemName});
         }
