@@ -1,20 +1,15 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.ListActivity;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
 
@@ -22,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpecificItemsActivity extends ListActivity {
+public class SpecificItemsActivity extends Activity {
     private List<Item> myItems = new ArrayList<Item>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_specific_items);
 
         Bundle extras = getIntent().getExtras();
         String itemType = extras.getString("itemType"); // eg: Map
@@ -35,7 +31,19 @@ public class SpecificItemsActivity extends ListActivity {
 
         populateListWith(itemType, itemName);
 
-        setListAdapter(new MobileArrayAdapter(this));
+        ListView list = (ListView) findViewById(R.id.list2);
+        list.setAdapter(new PerformanceArrayAdapter(this, myItems));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                int iconID = myItems.get(position).getIconID();
+
+                Intent fullScreenIntent = new Intent(SpecificItemsActivity.this, FullScreenImage.class);
+                fullScreenIntent.putExtra("iconID", iconID);
+
+                startActivity(fullScreenIntent);
+            }
+        });
 
         // Change title
         getActionBar().setTitle(itemName + " Skins");
@@ -81,39 +89,6 @@ public class SpecificItemsActivity extends ListActivity {
         cursor.close();
     }
 
-    /**
-     * http://www.mkyong.com/android/android-listview-example/
-     */
-    public class MobileArrayAdapter extends ArrayAdapter<Item> {
-        private final Context context;
-
-        public MobileArrayAdapter(Context context) {
-            super(context, R.layout.item_view, myItems);
-            this.context = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            Item currentItem = myItems.get(position);
-            View rowView = inflater.inflate(R.layout.item_view, parent, false);
-
-            ImageView icon = (ImageView) rowView.findViewById(R.id.item_icon);
-            TextView name = (TextView) rowView.findViewById(R.id.item_name);
-            TextView price = (TextView) rowView.findViewById(R.id.item_price);
-            TextView description = (TextView) rowView.findViewById(R.id.item_description);
-
-            icon.setImageResource(currentItem.getIconID());
-            name.setText(currentItem.getItemName());
-            price.setText(currentItem.getPrice());
-            description.setText(currentItem.getDescription());
-
-            return rowView;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -128,15 +103,5 @@ public class SpecificItemsActivity extends ListActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        int iconID = myItems.get(position).getIconID();
-
-        Intent fullScreenIntent = new Intent(this, FullScreenImage.class);
-        fullScreenIntent.putExtra("iconID", iconID);
-
-        startActivity(fullScreenIntent);
     }
 }
