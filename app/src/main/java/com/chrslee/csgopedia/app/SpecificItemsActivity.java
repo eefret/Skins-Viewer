@@ -1,10 +1,10 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpecificItemsActivity extends Activity {
+public class SpecificItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
 
     @Override
@@ -46,7 +46,7 @@ public class SpecificItemsActivity extends Activity {
         });
 
         // Change title
-        getActionBar().setTitle(itemName + " Skins");
+        getSupportActionBar().setTitle(itemName + " Skins");
     }
 
     // Populate the arraylist with all of the skins

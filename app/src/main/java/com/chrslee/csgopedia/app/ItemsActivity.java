@@ -1,10 +1,10 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemsActivity extends Activity {
+public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
     private String itemType;
 
@@ -45,7 +45,7 @@ public class ItemsActivity extends Activity {
         });
 
         // Change title
-        getActionBar().setTitle(itemType + " List");
+        getSupportActionBar().setTitle(itemType + " List");
     }
 
     // Populate the arraylist with all of the weapons

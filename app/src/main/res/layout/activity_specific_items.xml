@@ -9,8 +9,12 @@
     tools:context="com.chrslee.csgopedia.app.SpecificItemsActivity">
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/list2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:fastScrollEnabled="true"
+        android:persistentDrawingCache="scrolling"
         android:scrollingCache="false" />
 </RelativeLayout>
