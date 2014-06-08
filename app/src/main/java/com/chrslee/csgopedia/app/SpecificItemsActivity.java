@@ -1,10 +1,12 @@
 package com.chrslee.csgopedia.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.chrslee.csgopedia.app.util.Item;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +80,21 @@ public class SpecificItemsActivity extends ActionBarActivity {
 
         // Change title
         getSupportActionBar().setTitle(itemName + " Skins");
+
+        // Show tutorial once
+        // https://github.com/amlcurran/ShowcaseView
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!prefs.getBoolean("firstTime", false)) {
+            new ShowcaseView.Builder(this, true)
+                    .setTarget(new ViewTarget(findViewById(R.id.list2)))
+                    .setContentTitle("View Steam Marketplace")
+                    .setContentText("Tap and hold to see a skin on the Steam Marketplace.")
+                    .setStyle(R.style.CustomShowcaseTheme)
+                    .build();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }
     }
 
     // Populate the arraylist with all of the skins
