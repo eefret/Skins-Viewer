@@ -28,7 +28,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
         final String itemType = extras.getString("itemType"); // eg: Map
-        String itemName = extras.getString("itemName"); // eg: Aztec
+        final String itemName = extras.getString("itemName"); // eg: Aztec
 
         populateListWith(itemType, itemName);
 
@@ -58,9 +58,9 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 // For map/case lists, weapon name is placed in the description field of Item
                 if (itemType.equals("Map") || itemType.equals("Case")) {
                     weaponName = myItems.get(position).getDescription();
-                // Otherwise, weapon name is itemType
+                // Otherwise, weapon name is itemName
                 } else {
-                    weaponName = itemType;
+                    weaponName = itemName;
                 }
 
                 String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
