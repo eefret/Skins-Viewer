@@ -69,7 +69,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
 
                 String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
                         "%20" + skinName;
-                URL.replace(" ", "%20");
+                URL = URL.replace(" ", "%20");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
                 startActivity(browserIntent);
 
