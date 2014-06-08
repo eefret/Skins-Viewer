@@ -3,6 +3,7 @@ package com.chrslee.csgopedia.app;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -26,13 +27,15 @@ public class SpecificItemsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_specific_items);
 
         Bundle extras = getIntent().getExtras();
-        String itemType = extras.getString("itemType"); // eg: Map
+        final String itemType = extras.getString("itemType"); // eg: Map
         String itemName = extras.getString("itemName"); // eg: Aztec
 
         populateListWith(itemType, itemName);
 
         ListView list = (ListView) findViewById(R.id.list2);
         list.setAdapter(new PerformanceArrayAdapter(this, myItems));
+
+        // View full screen image
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -42,6 +45,32 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 fullScreenIntent.putExtra("iconID", iconID);
 
                 startActivity(fullScreenIntent);
+            }
+        });
+
+        // Show marketplace page in browser
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String skinName = myItems.get(position).getItemName();
+                String weaponName;
+
+                // For map/case lists, weapon name is placed in the description field of Item
+                if (itemType.equals("Map") || itemType.equals("Case")) {
+                    weaponName = myItems.get(position).getDescription();
+                // Otherwise, weapon name is itemType
+                } else {
+                    weaponName = itemType;
+                }
+
+                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
+                        "%20" + skinName;
+                URL.replace(" ", "%20");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+                startActivity(browserIntent);
+
+                // True prevents normal click event from occurring as well
+                return true;
             }
         });
 

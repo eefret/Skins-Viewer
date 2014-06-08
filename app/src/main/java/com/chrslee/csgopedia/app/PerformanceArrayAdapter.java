@@ -57,7 +57,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
 
 
         holder.icon.setImageBitmap(
-                decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 80, 80));
+                decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
         holder.name.setText(currentItem.getItemName());
         holder.price.setText(currentItem.getPrice());
         holder.description.setText(currentItem.getDescription());
