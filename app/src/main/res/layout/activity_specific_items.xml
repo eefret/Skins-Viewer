@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="6dp"
-    tools:context="com.chrslee.csgopedia.app.ItemsActivity">
+    tools:context="com.chrslee.csgopedia.app.SpecificItemsActivity">
 
     <ListView
-        android:id="@+id/list1"
+        android:id="@+id/list2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"

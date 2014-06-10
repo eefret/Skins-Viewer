@@ -1,20 +1,15 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
 
@@ -22,23 +17,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemsActivity extends ListActivity {
+public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
     private String itemType;
-
+    private int listType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_items);
 
         Bundle extras = getIntent().getExtras();
         itemType = extras.getString("itemType");
 
+        if (itemType.equals("Map") || itemType.equals("Case")) {
+            listType = 2;
+        } else {
+            listType = 1;
+        }
+
         populateListWith(itemType);
 
-        setListAdapter(new MobileArrayAdapter(this));
+        ListView list = (ListView) findViewById(R.id.list1);
+        list.setAdapter(new PerformanceArrayAdapter(this, myItems));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(ItemsActivity.this, SpecificItemsActivity.class);
+                intent.putExtra("itemName", myItems.get(position).getItemName());
+                intent.putExtra("itemType", itemType);
+                intent.putExtra("listType", listType);
+                startActivity(intent);
+            }
+        });
 
         // Change title
-        getActionBar().setTitle(itemType + " List");
+        getSupportActionBar().setTitle(itemType + " List");
     }
 
     // Populate the arraylist with all of the weapons
@@ -54,40 +67,10 @@ public class ItemsActivity extends ListActivity {
                     "drawable", this.getPackageName());
             String price = cursor.getString(cursor.getColumnIndex("Price"));
 
-            myItems.add(new Item(weaponName, "", imageRef, price));
+            // Note: Item's params are String itemName, String description, int iconID, String price, int listType
+            myItems.add(new Item(weaponName, "", imageRef, price, listType));
         }
         cursor.close();
-    }
-
-    /**
-     * http://www.mkyong.com/android/android-listview-example/
-     */
-    public class MobileArrayAdapter extends ArrayAdapter<Item> {
-        private final Context context;
-
-        public MobileArrayAdapter(Context context) {
-            super(context, R.layout.item_view, myItems);
-            this.context = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            Item currentItem = myItems.get(position);
-            View rowView = inflater.inflate(R.layout.item_view, parent, false);
-
-            ImageView icon = (ImageView) rowView.findViewById(R.id.item_icon);
-            TextView name = (TextView) rowView.findViewById(R.id.item_name);
-            TextView price = (TextView) rowView.findViewById(R.id.item_price);
-
-            icon.setImageResource(currentItem.getIconID());
-            name.setText(currentItem.getItemName());
-            price.setText(currentItem.getPrice());
-
-            return rowView;
-        }
     }
 
     @Override
@@ -104,14 +87,5 @@ public class ItemsActivity extends ListActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(this, SpecificItemsActivity.class);
-        intent.putExtra("itemName", myItems.get(position).getItemName());
-        intent.putExtra("itemType", itemType);
-
-        startActivity(intent);
     }
 }

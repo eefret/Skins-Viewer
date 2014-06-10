@@ -1,44 +1,110 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpecificItemsActivity extends ListActivity {
+public class SpecificItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
+    private int listType;
+    PerformanceArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_specific_items);
 
         Bundle extras = getIntent().getExtras();
-        String itemType = extras.getString("itemType"); // eg: Map
-        String itemName = extras.getString("itemName"); // eg: Aztec
+        final String itemType = extras.getString("itemType"); // eg: Map
+        final String itemName = extras.getString("itemName"); // eg: Aztec
+        listType = extras.getInt("listType");
 
         populateListWith(itemType, itemName);
 
-        setListAdapter(new MobileArrayAdapter(this));
+        ListView list = (ListView) findViewById(R.id.list2);
+        adapter = new PerformanceArrayAdapter(this, myItems);
+        list.setAdapter(adapter);
+
+        // View full screen image
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                int iconID = myItems.get(position).getIconID();
+
+                Intent fullScreenIntent = new Intent(SpecificItemsActivity.this, FullScreenImage.class);
+                fullScreenIntent.putExtra("iconID", iconID);
+
+                startActivity(fullScreenIntent);
+            }
+        });
+
+        // Show marketplace page in browser
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String skinName = myItems.get(position).getItemName();
+                String weaponName;
+
+                // Regular knives don't have a skin name
+                if (skinName.equals("Regular")) {
+                    skinName = "";
+                }
+                // For map/case lists, weapon name is placed in the description field of Item
+                if (listType == 2) {
+                    weaponName = myItems.get(position).getDescription();
+                    // Otherwise, weapon name is itemName
+                } else {
+                    weaponName = itemName;
+                }
+
+                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
+                        "+" + skinName;
+                URL = URL.replace(" ", "+");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+                startActivity(browserIntent);
+
+                // True prevents normal click event from occurring as well
+                return true;
+            }
+        });
 
         // Change title
-        getActionBar().setTitle(itemName + " Skins");
+        getSupportActionBar().setTitle(itemName + " Skins");
+
+        // Show tutorial once
+        // https://github.com/amlcurran/ShowcaseView
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("firstTime", false)) {
+            new ShowcaseView.Builder(this, true)
+                    .setTarget(new ViewTarget(findViewById(R.id.list2)))
+                    .setContentTitle("View Steam Marketplace")
+                    .setContentText("Tap and hold to see a skin on the Steam Marketplace.")
+                    .setStyle(R.style.CustomShowcaseTheme)
+                    .build();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }
     }
 
     // Populate the arraylist with all of the skins
@@ -63,55 +129,28 @@ public class SpecificItemsActivity extends ListActivity {
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
                     "drawable", this.getPackageName());
             String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));
-            String weaponName;
+            String weaponName = "";
+            String mapOrBox = "";
 
             // Don't need to show weapon names for a list of skins of 1 weapon, show map/case instead.
-            if (itemType.equals("Map") || itemType.equals("Case")) {
+            if (listType == 2) {
                 weaponName = cursor.getString(cursor.getColumnIndex("Name"));
             } else {
-                weaponName = cursor.getString(cursor.getColumnIndex("Map"));
-                if (weaponName.equals("")) {
-                    weaponName = cursor.getString(cursor.getColumnIndex("Box"));
+                mapOrBox = cursor.getString(cursor.getColumnIndex("Map"));
+                if (mapOrBox.equals("")) {
+                    mapOrBox = cursor.getString(cursor.getColumnIndex("Box"));
                 }
             }
 
-            // Put rarity in price field (temporary?)
-            myItems.add(new Item(skinName, weaponName, imageRef, rarity));
+            // Note: Item's params are String itemName, String description, int iconID, String price
+            // skinName and weaponName are swapped here for visual purposes
+            if (listType == 2) {
+                myItems.add(new Item(skinName, weaponName, imageRef, rarity, weaponName));
+            } else {
+                myItems.add(new Item(skinName, mapOrBox, imageRef, rarity, weaponName));
+            }
         }
         cursor.close();
-    }
-
-    /**
-     * http://www.mkyong.com/android/android-listview-example/
-     */
-    public class MobileArrayAdapter extends ArrayAdapter<Item> {
-        private final Context context;
-
-        public MobileArrayAdapter(Context context) {
-            super(context, R.layout.item_view, myItems);
-            this.context = context;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            Item currentItem = myItems.get(position);
-            View rowView = inflater.inflate(R.layout.item_view, parent, false);
-
-            ImageView icon = (ImageView) rowView.findViewById(R.id.item_icon);
-            TextView name = (TextView) rowView.findViewById(R.id.item_name);
-            TextView price = (TextView) rowView.findViewById(R.id.item_price);
-            TextView description = (TextView) rowView.findViewById(R.id.item_description);
-
-            icon.setImageResource(currentItem.getIconID());
-            name.setText(currentItem.getItemName());
-            price.setText(currentItem.getPrice());
-            description.setText(currentItem.getDescription());
-
-            return rowView;
-        }
     }
 
     @Override
@@ -128,15 +167,5 @@ public class SpecificItemsActivity extends ListActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        int iconID = myItems.get(position).getIconID();
-
-        Intent fullScreenIntent = new Intent(this, FullScreenImage.class);
-        fullScreenIntent.putExtra("iconID", iconID);
-
-        startActivity(fullScreenIntent);
     }
 }
