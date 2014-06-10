@@ -8,17 +8,7 @@ public class Item {
     private String description; //Text field under item name
     private int iconID; //ID of png icon
     private String price; //Price of item
-    private int listType; // first or second list
     private String weaponName;
-
-    public Item(String itemName, String description, int iconID, String price, int listType) {
-        super();
-        this.itemName = itemName;
-        this.iconID = iconID;
-        this.price = price;
-        this.description = description;
-        this.listType = listType;
-    }
 
     public Item(String itemName, String description, int iconID, String price, String weaponName) {
         super();
@@ -43,10 +33,6 @@ public class Item {
 
     public String getDescription() {
         return description;
-    }
-
-    public int getListType() {
-        return listType;
     }
 
     public String getWeaponName() {

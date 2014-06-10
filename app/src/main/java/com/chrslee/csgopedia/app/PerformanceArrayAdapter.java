@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,6 +153,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
                 skinName = "";
             }
             publishProgress("Fetching price...");
+
             return LowestPriceScraper.getLowestPrice(mWeaponName + "+" + skinName);
         }
 

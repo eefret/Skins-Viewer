@@ -6,13 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -28,16 +26,18 @@ public class SpecificItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
     private int listType;
     PerformanceArrayAdapter adapter;
+    String weaponName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_items);
 
-        Bundle extras = getIntent().getExtras();
+        final Bundle extras = getIntent().getExtras();
         final String itemType = extras.getString("itemType"); // eg: Map
         final String itemName = extras.getString("itemName"); // eg: Aztec
         listType = extras.getInt("listType");
+        weaponName = extras.getString("weaponName");
 
         populateListWith(itemType, itemName);
 
@@ -63,7 +63,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String skinName = myItems.get(position).getItemName();
-                String weaponName;
+                String wepName;
 
                 // Regular knives don't have a skin name
                 if (skinName.equals("Regular")) {
@@ -71,13 +71,13 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 }
                 // For map/case lists, weapon name is placed in the description field of Item
                 if (listType == 2) {
-                    weaponName = myItems.get(position).getDescription();
-                    // Otherwise, weapon name is itemName
+                    wepName = myItems.get(position).getDescription();
+                // Otherwise, weapon name is in bundle
                 } else {
-                    weaponName = itemName;
+                    wepName = weaponName;
                 }
 
-                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
+                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + wepName +
                         "+" + skinName;
                 URL = URL.replace(" ", "+");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
@@ -129,12 +129,12 @@ public class SpecificItemsActivity extends ActionBarActivity {
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
                     "drawable", this.getPackageName());
             String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));
-            String weaponName = "";
+            String wepName = "";
             String mapOrBox = "";
 
             // Don't need to show weapon names for a list of skins of 1 weapon, show map/case instead.
             if (listType == 2) {
-                weaponName = cursor.getString(cursor.getColumnIndex("Name"));
+                wepName = cursor.getString(cursor.getColumnIndex("Name"));
             } else {
                 mapOrBox = cursor.getString(cursor.getColumnIndex("Map"));
                 if (mapOrBox.equals("")) {
@@ -142,10 +142,10 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 }
             }
 
-            // Note: Item's params are String itemName, String description, int iconID, String price
+            // Note: Item's params are String itemName, String description, int iconID, String price, String weaponName (explicit)
             // skinName and weaponName are swapped here for visual purposes
             if (listType == 2) {
-                myItems.add(new Item(skinName, weaponName, imageRef, rarity, weaponName));
+                myItems.add(new Item(skinName, wepName, imageRef, rarity, wepName));
             } else {
                 myItems.add(new Item(skinName, mapOrBox, imageRef, rarity, weaponName));
             }

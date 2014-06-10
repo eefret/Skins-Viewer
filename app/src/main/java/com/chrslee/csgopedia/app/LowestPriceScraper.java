@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 
 /**
  * Scrapes a Steam Marketplace search result for the lowest price.
@@ -25,6 +24,7 @@ public class LowestPriceScraper {
                         .userAgent("Mozilla").timeout(0).get();
                 break;
             } catch (IOException e) {
+                // Do nothing
             }
         }
 

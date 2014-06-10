@@ -43,9 +43,16 @@ public class ItemsActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(ItemsActivity.this, SpecificItemsActivity.class);
+
                 intent.putExtra("itemName", myItems.get(position).getItemName());
                 intent.putExtra("itemType", itemType);
                 intent.putExtra("listType", listType);
+
+                // TODO: Very messy architecture, needs to be cleaned up in ItemsActivity and SpecificItemsActivity
+                if (listType == 1) {
+                    intent.putExtra("weaponName", myItems.get(position).getItemName());
+                }
+
                 startActivity(intent);
             }
         });
@@ -68,7 +75,7 @@ public class ItemsActivity extends ActionBarActivity {
             String price = cursor.getString(cursor.getColumnIndex("Price"));
 
             // Note: Item's params are String itemName, String description, int iconID, String price, int listType
-            myItems.add(new Item(weaponName, "", imageRef, price, listType));
+            myItems.add(new Item(weaponName, "", imageRef, price, itemType));
         }
         cursor.close();
     }
