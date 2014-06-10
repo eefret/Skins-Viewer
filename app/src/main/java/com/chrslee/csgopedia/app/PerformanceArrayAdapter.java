@@ -1,9 +1,12 @@
 package com.chrslee.csgopedia.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +82,11 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             if (cachedLowest != null) {
                 viewHolder.marketPrice.setText(cachedLowest);
             } else {
-                new ScraperAsyncTask(position, viewHolder, weaponName).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+                ConnectionDetector cd = new ConnectionDetector(context);
+
+                if (cd.isConnectedToInternet()) {
+                    new ScraperAsyncTask(position, viewHolder, weaponName).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+                }
             }
         }
 
@@ -171,6 +178,32 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         @Override
         protected void onProgressUpdate(String... params) {
             mHolder.marketPrice.setText(params[0]);
+        }
+    }
+
+    public class ConnectionDetector {
+        private Context _context;
+
+        public ConnectionDetector(Context context) {
+            this._context = context;
+        }
+
+        public boolean isConnectedToInternet() {
+            ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            if (connectivity != null)
+            {
+                NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++)
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                            return true;
+                        }
+                }
+            }
+
+            return false;
         }
     }
 }
