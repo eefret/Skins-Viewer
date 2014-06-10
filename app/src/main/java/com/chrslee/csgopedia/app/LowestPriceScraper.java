@@ -22,9 +22,8 @@ public class LowestPriceScraper {
         while (true) {
             try {
                 doc = Jsoup.connect("http://steamcommunity.com/market/search?q=appid%3A730+" + query)
-                        .userAgent("Chrome").get();
+                        .userAgent("Mozilla").timeout(0).get();
                 break;
-            } catch (SocketTimeoutException ex) {
             } catch (IOException e) {
             }
         }

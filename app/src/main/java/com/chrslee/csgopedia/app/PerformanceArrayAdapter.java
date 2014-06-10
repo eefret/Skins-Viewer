@@ -63,6 +63,9 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         Item currentItem = data.get(position);
         viewHolder = (ViewHolder) convertView.getTag();
 
+        // Clear out price field so it doesn't reappear for the next item when scrolling
+        viewHolder.marketPrice.setText("");
+
         viewHolder.icon.setImageBitmap(
                 decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
         viewHolder.name.setText(currentItem.getItemName());
@@ -74,7 +77,6 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         String cachedLowest = priceCache.get(position);
 
         if (viewHolder.description.getText().toString().length() > 0 && viewHolder.name.getText().toString().length() > 0) {
-            Log.d("adapter", "Cached lowest is: " + cachedLowest);
             if (cachedLowest != null) {
                 viewHolder.marketPrice.setText(cachedLowest);
             } else {
@@ -133,7 +135,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
      * Also keep track of position since View recycling can occur at the same time (scrolling)
      * http://stackoverflow.com/questions/11695850/android-listview-updating-of-image-thumbnails-using-asynctask-causes-view-recycl
      */
-    private static class ScraperAsyncTask extends AsyncTask<Void, Void, String> {
+    private static class ScraperAsyncTask extends AsyncTask<Void, String, String> {
         private ViewHolder mHolder;
         private String mWeaponName;
         private int mPosition;
@@ -146,11 +148,13 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
 
         @Override
         protected String doInBackground(Void... params) {
-            String lowestPrice = LowestPriceScraper
-                    .getLowestPrice(mWeaponName
-                            + "+"
-                            + mHolder.name.getText().toString());
-            return lowestPrice;
+            String skinName = mHolder.name.getText().toString();
+            // Strip out knives that have default skins so scraper searches correctly
+            if (skinName.equals("Regular")) {
+                skinName = "";
+            }
+            publishProgress("Fetching price...");
+            return LowestPriceScraper.getLowestPrice(mWeaponName + "+" + skinName);
         }
 
         @Override
@@ -162,6 +166,11 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
                     mHolder.marketPrice.setText(output);
                 }
             }
+        }
+
+        @Override
+        protected void onProgressUpdate(String... params) {
+            mHolder.marketPrice.setText(params[0]);
         }
     }
 }
