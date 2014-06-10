@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -24,6 +26,8 @@ import java.util.List;
 
 public class SpecificItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
+    private int listType;
+    PerformanceArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,13 @@ public class SpecificItemsActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         final String itemType = extras.getString("itemType"); // eg: Map
         final String itemName = extras.getString("itemName"); // eg: Aztec
+        listType = extras.getInt("listType");
 
         populateListWith(itemType, itemName);
 
         ListView list = (ListView) findViewById(R.id.list2);
-        list.setAdapter(new PerformanceArrayAdapter(this, myItems));
+        adapter = new PerformanceArrayAdapter(this, myItems);
+        list.setAdapter(adapter);
 
         // View full screen image
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,17 +65,21 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 String skinName = myItems.get(position).getItemName();
                 String weaponName;
 
+                // Regular knives don't have a skin name
+                if (skinName.equals("Regular")) {
+                    skinName = "";
+                }
                 // For map/case lists, weapon name is placed in the description field of Item
-                if (itemType.equals("Map") || itemType.equals("Case")) {
+                if (listType == 2) {
                     weaponName = myItems.get(position).getDescription();
-                // Otherwise, weapon name is itemName
+                    // Otherwise, weapon name is itemName
                 } else {
                     weaponName = itemName;
                 }
 
                 String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + weaponName +
-                        "%20" + skinName;
-                URL = URL.replace(" ", "%20");
+                        "+" + skinName;
+                URL = URL.replace(" ", "+");
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
                 startActivity(browserIntent);
 
@@ -84,7 +94,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
         // Show tutorial once
         // https://github.com/amlcurran/ShowcaseView
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!prefs.getBoolean("firstTime", false)) {
+        if (!prefs.getBoolean("firstTime", false)) {
             new ShowcaseView.Builder(this, true)
                     .setTarget(new ViewTarget(findViewById(R.id.list2)))
                     .setContentTitle("View Steam Marketplace")
@@ -119,20 +129,26 @@ public class SpecificItemsActivity extends ActionBarActivity {
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
                     "drawable", this.getPackageName());
             String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));
-            String weaponName;
+            String weaponName = "";
+            String mapOrBox = "";
 
             // Don't need to show weapon names for a list of skins of 1 weapon, show map/case instead.
-            if (itemType.equals("Map") || itemType.equals("Case")) {
+            if (listType == 2) {
                 weaponName = cursor.getString(cursor.getColumnIndex("Name"));
             } else {
-                weaponName = cursor.getString(cursor.getColumnIndex("Map"));
-                if (weaponName.equals("")) {
-                    weaponName = cursor.getString(cursor.getColumnIndex("Box"));
+                mapOrBox = cursor.getString(cursor.getColumnIndex("Map"));
+                if (mapOrBox.equals("")) {
+                    mapOrBox = cursor.getString(cursor.getColumnIndex("Box"));
                 }
             }
 
-            // Put rarity in price field (temporary?)
-            myItems.add(new Item(skinName, weaponName, imageRef, rarity));
+            // Note: Item's params are String itemName, String description, int iconID, String price
+            // skinName and weaponName are swapped here for visual purposes
+            if (listType == 2) {
+                myItems.add(new Item(skinName, weaponName, imageRef, rarity, weaponName));
+            } else {
+                myItems.add(new Item(skinName, mapOrBox, imageRef, rarity, weaponName));
+            }
         }
         cursor.close();
     }

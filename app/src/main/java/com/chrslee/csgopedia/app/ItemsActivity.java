@@ -20,7 +20,7 @@ import java.util.List;
 public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
     private String itemType;
-
+    private int listType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +28,12 @@ public class ItemsActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
         itemType = extras.getString("itemType");
+
+        if (itemType.equals("Map") || itemType.equals("Case")) {
+            listType = 2;
+        } else {
+            listType = 1;
+        }
 
         populateListWith(itemType);
 
@@ -39,7 +45,7 @@ public class ItemsActivity extends ActionBarActivity {
                 Intent intent = new Intent(ItemsActivity.this, SpecificItemsActivity.class);
                 intent.putExtra("itemName", myItems.get(position).getItemName());
                 intent.putExtra("itemType", itemType);
-
+                intent.putExtra("listType", listType);
                 startActivity(intent);
             }
         });
@@ -61,7 +67,8 @@ public class ItemsActivity extends ActionBarActivity {
                     "drawable", this.getPackageName());
             String price = cursor.getString(cursor.getColumnIndex("Price"));
 
-            myItems.add(new Item(weaponName, "", imageRef, price));
+            // Note: Item's params are String itemName, String description, int iconID, String price, int listType
+            myItems.add(new Item(weaponName, "", imageRef, price, listType));
         }
         cursor.close();
     }

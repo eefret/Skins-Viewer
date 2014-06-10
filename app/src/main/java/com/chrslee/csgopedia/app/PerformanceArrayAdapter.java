@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,48 +24,65 @@ import java.util.List;
 public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
     private final Activity context;
     private final List<Item> data;
+    private static HashMap<Integer, String> priceCache;
 
     static class ViewHolder {
         ImageView icon;
         TextView name;
         TextView price;
         TextView description;
+        TextView marketPrice;
+        int position;
     }
 
     public PerformanceArrayAdapter(Activity context, List<Item> data) {
         super(context, R.layout.item_view, data);
         this.context = context;
         this.data = data;
+        priceCache = new HashMap<Integer, String>();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
+        ViewHolder viewHolder;
 
-        if (rowView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = context.getLayoutInflater();
-            rowView = inflater.inflate(R.layout.item_view, parent, false);
+            convertView = inflater.inflate(R.layout.item_view, null);
 
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.icon = (ImageView) rowView.findViewById(R.id.item_icon);
-            viewHolder.name = (TextView) rowView.findViewById(R.id.item_name);
-            viewHolder.price = (TextView) rowView.findViewById(R.id.item_price);
-            viewHolder.description = (TextView) rowView.findViewById(R.id.item_description);
+            viewHolder = new ViewHolder();
+            viewHolder.icon = (ImageView) convertView.findViewById(R.id.item_icon);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.item_name);
+            viewHolder.price = (TextView) convertView.findViewById(R.id.item_price);
+            viewHolder.description = (TextView) convertView.findViewById(R.id.item_description);
+            viewHolder.marketPrice = (TextView) convertView.findViewById(R.id.market_price);
 
-            rowView.setTag(viewHolder);
+            convertView.setTag(viewHolder);
         }
 
         Item currentItem = data.get(position);
-        ViewHolder holder = (ViewHolder) rowView.getTag();
+        viewHolder = (ViewHolder) convertView.getTag();
 
-
-        holder.icon.setImageBitmap(
+        viewHolder.icon.setImageBitmap(
                 decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
-        holder.name.setText(currentItem.getItemName());
-        holder.price.setText(currentItem.getPrice());
-        holder.description.setText(currentItem.getDescription());
+        viewHolder.name.setText(currentItem.getItemName());
+        viewHolder.price.setText(currentItem.getPrice());
+        viewHolder.description.setText(currentItem.getDescription());
+        viewHolder.position = position;
 
-        return rowView;
+        String weaponName = currentItem.getWeaponName();
+        String cachedLowest = priceCache.get(position);
+
+        if (viewHolder.description.getText().toString().length() > 0 && viewHolder.name.getText().toString().length() > 0) {
+            Log.d("adapter", "Cached lowest is: " + cachedLowest);
+            if (cachedLowest != null) {
+                viewHolder.marketPrice.setText(cachedLowest);
+            } else {
+                new ScraperAsyncTask(position, viewHolder, weaponName).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+            }
+        }
+
+        return convertView;
     }
 
     /**
@@ -104,5 +124,44 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         }
 
         return inSampleSize;
+    }
+
+    /**
+     * Do scraping in separate thread so main UI doesn't freeze up.
+     * http://jmsliu.com/1431/download-images-by-asynctask-in-listview-android-example.html
+     *
+     * Also keep track of position since View recycling can occur at the same time (scrolling)
+     * http://stackoverflow.com/questions/11695850/android-listview-updating-of-image-thumbnails-using-asynctask-causes-view-recycl
+     */
+    private static class ScraperAsyncTask extends AsyncTask<Void, Void, String> {
+        private ViewHolder mHolder;
+        private String mWeaponName;
+        private int mPosition;
+
+        public ScraperAsyncTask(int position, ViewHolder holder, String weaponName) {
+            mPosition = position;
+            mHolder = holder;
+            mWeaponName = weaponName;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String lowestPrice = LowestPriceScraper
+                    .getLowestPrice(mWeaponName
+                            + "+"
+                            + mHolder.name.getText().toString());
+            return lowestPrice;
+        }
+
+        @Override
+        protected void onPostExecute(String lowestPrice) {
+            if (mHolder.position == mPosition) {
+                if (lowestPrice != null) {
+                    String output = "Starting at: " + lowestPrice;
+                    priceCache.put(mPosition, output);
+                    mHolder.marketPrice.setText(output);
+                }
+            }
+        }
     }
 }

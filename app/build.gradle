@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.github.amlcurran.showcaseview:library:5.0.0-SNAPSHOT'
+    compile files('libs/jsoup-1.7.3.jar')
 }
