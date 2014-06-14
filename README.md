@@ -1,4 +1,4 @@
-## <img src="http://i.imgur.com/VOIzl3F.png" alt="app icon" style="width: 50px"/> CS:GO Skins Viewer <a href="https://play.google.com/store/apps/details?id=com.chrslee.csgopedia.app"><img style="float:right" src="http://developer.android.com/images/brand/en_generic_rgb_wo_45.png" alt="google play link" /></a>
+## ![app icon](http://i.imgur.com/CExc4lL.png) CS:GO Skins Viewer <a href="https://play.google.com/store/apps/details?id=com.chrslee.csgopedia.app"><img align="right" src="http://developer.android.com/images/brand/en_generic_rgb_wo_45.png" alt="google play link" /></a>
 
 
 This Android app serves as a reference guide for all Counter-Strike: Global Offensive skins.
