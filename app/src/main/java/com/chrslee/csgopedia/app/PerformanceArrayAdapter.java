@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -65,13 +66,37 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         Item currentItem = data.get(position);
         viewHolder = (ViewHolder) convertView.getTag();
 
-        // Clear out price field so it doesn't reappear for the next item when scrolling
+        // Clear out market price field so it doesn't reappear for the next item when scrolling
         viewHolder.marketPrice.setText("");
 
         viewHolder.icon.setImageBitmap(
                 decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
         viewHolder.name.setText(currentItem.getItemName());
+
+        String rarity = currentItem.getPrice();
         viewHolder.price.setText(currentItem.getPrice());
+
+        // Assign rarity colors
+        if (rarity != null) {
+            if (rarity.equals("Rare")) {
+                viewHolder.price.setTextColor(Color.rgb(255, 215, 0)); // yellow
+            } else if (rarity.equals("Consumer")) {
+                viewHolder.price.setTextColor(Color.rgb(255, 255, 240)); // ivory white
+            } else if (rarity.equals("Industrial")) {
+                viewHolder.price.setTextColor(Color.rgb(176, 195, 217)); // light blue
+            } else if (rarity.equals("Mil-Spec")) {
+                viewHolder.price.setTextColor(Color.rgb(75, 105, 255)); // blue
+            } else if (rarity.equals("Restricted")) {
+                viewHolder.price.setTextColor(Color.rgb(136, 71, 255)); // purple
+            } else if (rarity.equals("Classified")) {
+                viewHolder.price.setTextColor(Color.rgb(211, 44, 230)); // pinkish-purple
+            } else if (rarity.equals("Covert")) {
+                viewHolder.price.setTextColor(Color.rgb(235, 75, 75)); // red
+            } else if (rarity.equals("Contraband")) {
+                viewHolder.price.setTextColor(Color.rgb(255, 165, 0)); // light orange
+            }
+        }
+
         viewHolder.description.setText(currentItem.getDescription());
         viewHolder.position = position;
 
@@ -137,7 +162,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
     /**
      * Do scraping in separate thread so main UI doesn't freeze up.
      * http://jmsliu.com/1431/download-images-by-asynctask-in-listview-android-example.html
-     *
+     * <p/>
      * Also keep track of position since View recycling can occur at the same time (scrolling)
      * http://stackoverflow.com/questions/11695850/android-listview-updating-of-image-thumbnails-using-asynctask-causes-view-recycl
      */
@@ -155,7 +180,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         @Override
         protected String doInBackground(Void... params) {
             String skinName = mHolder.name.getText().toString();
-            // Strip out knives that have default skins so scraper searches correctly
+            // Strip out knives that have default skins so scraper searches correctly.
             if (skinName.equals("Regular")) {
                 skinName = "";
             }
@@ -171,6 +196,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
                     String output = "Starting at: " + lowestPrice;
                     priceCache.put(mPosition, output);
                     mHolder.marketPrice.setText(output);
+                    mHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74)); // green
                 }
             }
         }
@@ -178,6 +204,8 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         @Override
         protected void onProgressUpdate(String... params) {
             mHolder.marketPrice.setText(params[0]);
+            // Sometimes when fast scrolling, "Fetching price" will appear green.
+            mHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74));
         }
     }
 
@@ -191,18 +219,17 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         public boolean isConnectedToInternet() {
             ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            if (connectivity != null)
-            {
-                NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (connectivity != null) {
+                NetworkInfo[] information = connectivity.getAllNetworkInfo();
 
-                if (info != null) {
-                    for (int i = 0; i < info.length; i++)
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                if (information != null) {
+                    for (NetworkInfo info : information) {
+                        if (info.getState() == NetworkInfo.State.CONNECTED) {
                             return true;
                         }
+                    }
                 }
             }
-
             return false;
         }
     }

@@ -50,8 +50,4 @@ public class LowestPriceScraper {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        System.out.println(LowestPriceScraper.getLowestPrice("AK-47"));
-    }
 }
