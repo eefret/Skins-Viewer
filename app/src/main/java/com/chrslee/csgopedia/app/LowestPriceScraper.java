@@ -20,8 +20,8 @@ public class LowestPriceScraper {
         // Reconnect until successful
         while (true) {
             try {
-                doc = Jsoup.connect("http://steamcommunity.com/market/search?q=appid%3A730+" + query)
-                        .userAgent("Mozilla").timeout(0).get();
+                doc = Jsoup.connect("http://steamcommunity.com/market/search?cc=us&q=appid%3A730+" + query)
+                        .userAgent("Chrome").timeout(0).get();
                 break;
             } catch (IOException e) {
                 // Do nothing
@@ -46,8 +46,12 @@ public class LowestPriceScraper {
                 }
             }
             // Return price to 2 decimal places
-            return "$" + String.format("%.2f", lowest);
+            return "$" + String.format("%.2f", lowest) + " USD";
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(LowestPriceScraper.getLowestPrice("AK-47"));
     }
 }
