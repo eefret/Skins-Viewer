@@ -13,9 +13,7 @@ import java.io.IOException;
  * with style of color:white (<span style=color:white>).
  */
 public class LowestPriceScraper {
-
-    public static String getLowestPrice(String query) {
-
+    public static double getLowestPrice(String query) {
         Document doc;
         // Reconnect until successful
         while (true) {
@@ -32,10 +30,11 @@ public class LowestPriceScraper {
         Elements spans = doc.select("span[style=color:white]");
         Element first = spans.first();
 
+        Double lowest = 0.0;
         if (first != null) {
             // Set lowest to the price of the first item
             // eg: value is "$13.89". Get "13.89".
-            Double lowest = Double.parseDouble(first.ownText().substring(1));
+            lowest= Double.parseDouble(first.ownText().substring(1));
 
             // Find absolute lowest price
             for (Element ele : spans) {
@@ -45,9 +44,7 @@ public class LowestPriceScraper {
                     lowest = price;
                 }
             }
-            // Return price to 2 decimal places
-            return "$" + String.format("%.2f", lowest) + " USD";
         }
-        return null;
+        return lowest;
     }
 }

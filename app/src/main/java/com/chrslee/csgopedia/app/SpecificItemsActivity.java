@@ -94,7 +94,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
         // Show tutorial once
         // https://github.com/amlcurran/ShowcaseView
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false)) {
+        if (!prefs.getBoolean("showedTutorial", false)) {
             new ShowcaseView.Builder(this, true)
                     .setTarget(new ViewTarget(findViewById(R.id.list2)))
                     .setContentTitle("View Steam Marketplace")
@@ -102,7 +102,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
                     .setStyle(R.style.CustomShowcaseTheme)
                     .build();
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstTime", true);
+            editor.putBoolean("showedTutorial", true);
             editor.commit();
         }
     }
@@ -156,7 +156,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.rifles, menu);
+        // getMenuInflater().inflate(R.menu.rifles, menu);
         return true;
     }
 

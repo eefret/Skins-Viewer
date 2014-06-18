@@ -25,7 +25,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         final Intent intent = new Intent(this, ItemsActivity.class);
-        ItemsDatabase.getInstance(this).getReadableDatabase(); // load db in main menu
 
         riflesButton = (Button) findViewById(R.id.rifles_button);
         riflesButton.setOnClickListener(new View.OnClickListener() {

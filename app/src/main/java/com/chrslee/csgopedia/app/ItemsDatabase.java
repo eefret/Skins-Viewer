@@ -1,7 +1,6 @@
 package com.chrslee.csgopedia.app;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 

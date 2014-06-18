@@ -1,13 +1,7 @@
 package com.chrslee.csgopedia.app;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,31 +12,35 @@ import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * ViewHolder pattern to improve ListView scrolling performance.
  */
 public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
-    private final Activity context;
+    private Activity context;
     private final List<Item> data;
-    private static HashMap<Integer, String> priceCache;
-
-    static class ViewHolder {
-        ImageView icon;
-        TextView name;
-        TextView price;
-        TextView description;
-        TextView marketPrice;
-        int position;
-    }
+    private HashMap<Integer, String> priceCache;
+    private double rate;
 
     public PerformanceArrayAdapter(Activity context, List<Item> data) {
         super(context, R.layout.item_view, data);
         this.context = context;
         this.data = data;
         priceCache = new HashMap<Integer, String>();
+    }
+
+    class ViewHolder {
+        ImageView icon;
+        TextView name;
+        TextView price;
+        TextView description;
+        TextView marketPrice;
+        int position;
     }
 
     @Override
@@ -68,9 +66,9 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
 
         // Clear out market price field so it doesn't reappear for the next item when scrolling
         viewHolder.marketPrice.setText("");
-
+        viewHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74)); // green
         viewHolder.icon.setImageBitmap(
-                decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
+                BitmapResizer.decodeSampledBitmapFromResource(context.getResources(), currentItem.getIconID(), 90, 90));
         viewHolder.name.setText(currentItem.getItemName());
 
         String rarity = currentItem.getPrice();
@@ -108,9 +106,8 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
                 viewHolder.marketPrice.setText(cachedLowest);
             } else {
                 ConnectionDetector cd = new ConnectionDetector(context);
-
                 if (cd.isConnectedToInternet()) {
-                    new ScraperAsyncTask(position, viewHolder, weaponName).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+                    new ScraperAsyncTask(position, viewHolder, weaponName).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void)null);
                 }
             }
         }
@@ -119,54 +116,13 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
     }
 
     /**
-     * http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
-     */
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    /**
      * Do scraping in separate thread so main UI doesn't freeze up.
      * http://jmsliu.com/1431/download-images-by-asynctask-in-listview-android-example.html
-     * <p/>
+     *
      * Also keep track of position since View recycling can occur at the same time (scrolling)
      * http://stackoverflow.com/questions/11695850/android-listview-updating-of-image-thumbnails-using-asynctask-causes-view-recycl
      */
-    private static class ScraperAsyncTask extends AsyncTask<Void, String, String> {
+    private class ScraperAsyncTask extends AsyncTask<Void, String, Double> {
         private ViewHolder mHolder;
         private String mWeaponName;
         private int mPosition;
@@ -178,7 +134,11 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected Double doInBackground(Void... params) {
+            if (rate == 0.0) {
+                rate = new CurrencyRates(context).getRate(Currency.getInstance(Locale.getDefault()).toString());
+            }
+
             String skinName = mHolder.name.getText().toString();
             // Strip out knives that have default skins so scraper searches correctly.
             if (skinName.equals("Regular")) {
@@ -186,18 +146,20 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             }
             publishProgress("Fetching price...");
 
-            return LowestPriceScraper.getLowestPrice(mWeaponName + "+" + skinName);
-        }
+            // To test output:
+            // Log.d("Currency", "Code: " + Currency.getInstance(Locale.getDefault()).toString()
+            //         + ", Rate: " + rate);
+            return LowestPriceScraper.getLowestPrice(mWeaponName + "+" + skinName) * rate;
+         }
 
         @Override
-        protected void onPostExecute(String lowestPrice) {
+        protected void onPostExecute(Double lowestPrice) {
             if (mHolder.position == mPosition) {
-                if (lowestPrice != null) {
-                    String output = "Starting at: " + lowestPrice;
-                    priceCache.put(mPosition, output);
-                    mHolder.marketPrice.setText(output);
-                    mHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74)); // green
-                }
+                // Format price according to device locale
+                String output = "Starting at: " + NumberFormat.getCurrencyInstance().format(lowestPrice);
+
+                priceCache.put(mPosition, output);
+                mHolder.marketPrice.setText(output);
             }
         }
 
@@ -206,31 +168,6 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             mHolder.marketPrice.setText(params[0]);
             // Sometimes when fast scrolling, "Fetching price" will appear green.
             mHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74));
-        }
-    }
-
-    public class ConnectionDetector {
-        private Context _context;
-
-        public ConnectionDetector(Context context) {
-            this._context = context;
-        }
-
-        public boolean isConnectedToInternet() {
-            ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            if (connectivity != null) {
-                NetworkInfo[] information = connectivity.getAllNetworkInfo();
-
-                if (information != null) {
-                    for (NetworkInfo info : information) {
-                        if (info.getState() == NetworkInfo.State.CONNECTED) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
         }
     }
 }
