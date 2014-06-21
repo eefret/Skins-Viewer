@@ -155,8 +155,13 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         @Override
         protected void onPostExecute(Double lowestPrice) {
             if (mHolder.position == mPosition) {
+                String output;
                 // Format price according to device locale
-                String output = "Starting at: " + NumberFormat.getCurrencyInstance().format(lowestPrice);
+                if(lowestPrice >= 0.0) {
+                    output = "Starting at: " + NumberFormat.getCurrencyInstance().format(lowestPrice);
+                } else {
+                    output = "None currently listed";
+                }
 
                 priceCache.put(mPosition, output);
                 mHolder.marketPrice.setText(output);

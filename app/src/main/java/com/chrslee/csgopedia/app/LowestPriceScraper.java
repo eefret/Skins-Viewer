@@ -30,11 +30,11 @@ public class LowestPriceScraper {
         Elements spans = doc.select("span[style=color:white]");
         Element first = spans.first();
 
-        Double lowest = 0.0;
+        Double lowest;
         if (first != null) {
             // Set lowest to the price of the first item
             // eg: value is "$13.89". Get "13.89".
-            lowest= Double.parseDouble(first.ownText().substring(1));
+            lowest = Double.parseDouble(first.ownText().substring(1));
 
             // Find absolute lowest price
             for (Element ele : spans) {
@@ -44,6 +44,9 @@ public class LowestPriceScraper {
                     lowest = price;
                 }
             }
+        } else {
+            // A negative price is not possible, so it will be used to signify that there were no results (no items being sold or invalid query)
+            lowest = -1.0;
         }
         return lowest;
     }
