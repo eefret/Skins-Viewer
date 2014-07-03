@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <release version="1.21" versioncode="9">
+        <change>Added Operation Breakout skins and Butterfly Knives!</change>
+        <change>Fixed a bug where the price was displayed incorrectly for skins with similar names (eg: Desert-Strike and Desert Storm).</change>
+        <change>Skins that are not available for purchase in the marketplace will show "None currently listed" instead of "$0.00".</change>
+    </release>
+</changelog>

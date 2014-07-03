@@ -30,6 +30,10 @@
             android:name=".FullScreenImage"
             android:theme="@style/Theme.AppCompat" >
         </activity>
+        <activity
+            android:name=".UserSettingsActivity"
+            android:label="Settings">
+        </activity>
     </application>
 
 </manifest>

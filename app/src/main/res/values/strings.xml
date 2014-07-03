@@ -23,5 +23,6 @@
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_cases">Cases</string>
-
+    <string name="title_changelog">Change Log</string>
+    <string name="changelog_close">Close</string>
 </resources>

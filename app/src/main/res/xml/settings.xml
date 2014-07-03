@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="Currency"
+        android:key="currency">
+
+        <SwitchPreference
+            android:key="auto_detect_locale"
+            android:summary="Display currency based on your phone's locale"
+            android:title="Auto-detection"
+            android:defaultValue="true"
+            android:disableDependentsState="true" />
+
+        <ListPreference
+            android:key="currency_list"
+            android:title="Select custom currency"
+            android:entries="@array/currencyList"
+            android:entryValues="@array/currencyListValues"
+            android:dependency="auto_detect_locale" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -66,7 +66,7 @@ public class ItemsActivity extends ActionBarActivity {
     // TODO: Understand SQLiteOpenHelper class
     private void populateListWith(String input) {
         SQLiteDatabase sqlDB = ItemsDatabase.getInstance(this).getReadableDatabase();
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Type = ? AND Skin = ? ORDER BY Name ASC", new String[]{input, "Regular"});
+        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Skins WHERE Type = ? AND Skin = ? ORDER BY Name ASC", new String[]{input, "Regular"});
 
         while (cursor.moveToNext()) {
             String weaponName = cursor.getString(cursor.getColumnIndex("Name"));
@@ -84,17 +84,20 @@ public class ItemsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.rifles, menu);
+
+        // Settings disabled until currency changing is implemented
+        //getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        //int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                Intent i = new Intent(this, UserSettingsActivity.class);
+                startActivityForResult(i, 1);
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

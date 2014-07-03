@@ -21,4 +21,7 @@
 -keep public class org.codehaus.jackson** {
     public *;
 }
+-keep public class com.astuetz.pagerslidingtabstrip** {
+    public *;
+}
 -dontwarn org.codehaus.jackson.**

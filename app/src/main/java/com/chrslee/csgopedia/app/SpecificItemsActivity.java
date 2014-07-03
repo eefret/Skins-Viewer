@@ -78,8 +78,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
                 }
 
                 String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + wepName +
-                        "+" + skinName;
-                URL = URL.replace(" ", "+");
+                        "+\"" + skinName + "\"";
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
                 startActivity(browserIntent);
 
@@ -113,14 +112,14 @@ public class SpecificItemsActivity extends ActionBarActivity {
         Cursor cursor;
 
         if (itemType.equals("Map")) {
-            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Map = ? ORDER BY Skin ASC", new String[]{itemName});
+            cursor = sqlDB.rawQuery("SELECT * FROM Skins WHERE Map = ? ORDER BY Skin ASC", new String[]{itemName});
         } else if (itemType.equals("Case")) {
             // Can't use "Case" as a field name since it's a restricted word.
             // However, I will still use "Case" as a value for the "Type" field.
             // Optionally, add "OR Box = 'All'" if you want to include the knife skins (drop from all cases)
-            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Box = ? ORDER BY Skin ASC", new String[]{itemName});
+            cursor = sqlDB.rawQuery("SELECT * FROM Skins WHERE Box = ? ORDER BY Skin ASC", new String[]{itemName});
         } else {
-            cursor = sqlDB.rawQuery("SELECT * FROM Weapons WHERE Name = ? ORDER BY Skin ASC", new String[]{itemName});
+            cursor = sqlDB.rawQuery("SELECT * FROM Skins WHERE Name = ? ORDER BY Skin ASC", new String[]{itemName});
         }
 
         while (cursor.moveToNext()) {
@@ -156,17 +155,20 @@ public class SpecificItemsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.rifles, menu);
+
+        // Settings disabled until currency changing is implemented
+        //getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        // int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                Intent i = new Intent(this, UserSettingsActivity.class);
+                startActivityForResult(i, 1);
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -146,10 +146,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             }
             publishProgress("Fetching price...");
 
-            // To test output:
-            // Log.d("Currency", "Code: " + Currency.getInstance(Locale.getDefault()).toString()
-            //         + ", Rate: " + rate);
-            return LowestPriceScraper.getLowestPrice(mWeaponName + "+" + skinName) * rate;
+            return LowestPriceScraper.getLowestPrice(mWeaponName + "+\"" + skinName + "\"") * rate;
          }
 
         @Override

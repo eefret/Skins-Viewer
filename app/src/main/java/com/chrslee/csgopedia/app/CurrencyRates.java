@@ -20,7 +20,7 @@ public class CurrencyRates {
     private SharedPreferences prefs;
     private String source;
     private long lastUpdated;
-    private final long MS_IN_HOUR = 3600000;
+    private static final long MS_IN_HOUR = 3600000;
 
     public CurrencyRates(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
