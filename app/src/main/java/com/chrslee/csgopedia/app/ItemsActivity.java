@@ -84,9 +84,7 @@ public class ItemsActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        // Settings disabled until currency changing is implemented
-        //getMenuInflater().inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 

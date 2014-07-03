@@ -33,7 +33,7 @@
         <item name="CHF">Swiss Franc</item>
         <item name="THB">Thai Baht</item>
         <item name="TRY">Turkish Lira</item>
-        <item name="USD">US Dollar</item>
+        <item name="USD">US Dollar (default)</item>
     </string-array>
     <string-array name="currencyListValues">
         <item name="AUD">AUD</item>

@@ -33,9 +33,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent intent = new Intent(this, ItemsActivity.class);
-
         showChangelog();
+
+        final Intent intent = new Intent(this, ItemsActivity.class);
 
         riflesButton = (Button) findViewById(R.id.rifles_button);
         riflesButton.setOnClickListener(new View.OnClickListener() {
@@ -116,9 +116,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        // Settings disabled until currency changing is implemented
-        //getMenuInflater().inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
 

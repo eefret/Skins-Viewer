@@ -1,8 +1,11 @@
 package com.chrslee.csgopedia.app;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.chrslee.csgopedia.app.util.Item;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.HashMap;
@@ -25,13 +29,18 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
     private Activity context;
     private final List<Item> data;
     private HashMap<Integer, String> priceCache;
-    private double rate;
+    private boolean isAutoDetected;
+    private String symbol;
 
     public PerformanceArrayAdapter(Activity context, List<Item> data) {
         super(context, R.layout.item_view, data);
         this.context = context;
         this.data = data;
         priceCache = new HashMap<Integer, String>();
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
+        symbol = sharedPrefs.getString("custom_currency", "USD");
     }
 
     class ViewHolder {
@@ -126,6 +135,8 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
         private ViewHolder mHolder;
         private String mWeaponName;
         private int mPosition;
+        private double rate;
+        private int precision;
 
         public ScraperAsyncTask(int position, ViewHolder holder, String weaponName) {
             mPosition = position;
@@ -135,8 +146,16 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
 
         @Override
         protected Double doInBackground(Void... params) {
-            if (rate == 0.0) {
+            // If auto-detect locale enabled, get local currency. Otherwise, get custom currency.
+            // TODO: This block of code is inefficient. Needs to run only once.
+            if (isAutoDetected) {
                 rate = new CurrencyRates(context).getRate(Currency.getInstance(Locale.getDefault()).toString());
+            } else {
+                rate = new CurrencyRates(context).getRate(symbol);
+
+                // Some currencies don't have "cents"
+                Currency cur = Currency.getInstance(symbol);
+                precision = cur.getDefaultFractionDigits();
             }
 
             String skinName = mHolder.name.getText().toString();
@@ -154,12 +173,16 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             if (mHolder.position == mPosition) {
                 String output;
                 // Format price according to device locale
-                if(lowestPrice >= 0.0) {
-                    output = "Starting at: " + NumberFormat.getCurrencyInstance().format(lowestPrice);
+                if(lowestPrice > 0.0) {
+                    if (isAutoDetected) {
+                        output = "Starting at: " + NumberFormat.getCurrencyInstance().format(lowestPrice);
+                    } else {
+                        BigDecimal bd = new BigDecimal(lowestPrice);
+                        output = "Starting at: " + formatCurrencyValue(bd, Currency.getInstance(symbol)) + " " + symbol;
+                    }
                 } else {
                     output = "None currently listed";
                 }
-
                 priceCache.put(mPosition, output);
                 mHolder.marketPrice.setText(output);
             }
@@ -171,5 +194,19 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             // Sometimes when fast scrolling, "Fetching price" will appear green.
             mHolder.marketPrice.setTextColor(Color.rgb(112, 176, 74));
         }
+    }
+
+    // https://www.codota.com/android/scenarios/52fcbcbbda0a2bf89c4a97c7/java.util.Currency?tag=dragonfly&fullSource=1
+    public String formatCurrencyValue(BigDecimal amount, Currency currency) {
+        NumberFormat currencyFormatter = NumberFormat.getInstance();
+        if (currencyFormatter == null) {
+            currencyFormatter = NumberFormat.getInstance();
+        }
+        currencyFormatter.setGroupingUsed(false);
+        currencyFormatter.setMaximumFractionDigits(currency
+                .getDefaultFractionDigits());
+        return currencyFormatter
+                .format(amount.setScale(currency.getDefaultFractionDigits(),
+                        BigDecimal.ROUND_HALF_EVEN));
     }
 }

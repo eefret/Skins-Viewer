@@ -3,6 +3,7 @@ package com.chrslee.csgopedia.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -53,7 +54,6 @@ public class CurrencyRates {
             try {
                 URL url = new URL("http://api.fixer.io/latest?base=USD");
                 Scanner scan = new Scanner(url.openStream());
-                source = "";
 
                 while (scan.hasNext()) {
                     source += scan.nextLine();
@@ -64,8 +64,6 @@ public class CurrencyRates {
                 editor.putString("ratesInJSON", source);
                 editor.putLong("lastUpdated", millisNow);
                 editor.commit();
-
-                lastUpdated = millisNow;
             } catch (Exception e) {
                 e.printStackTrace();
             }

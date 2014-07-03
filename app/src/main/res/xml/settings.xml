@@ -12,11 +12,12 @@
             android:defaultValue="true"
             android:disableDependentsState="true" />
 
-        <ListPreference
-            android:key="currency_list"
+        <com.chrslee.csgopedia.app.ListPreferenceShowSummary
+            android:key="custom_currency"
             android:title="Select custom currency"
             android:entries="@array/currencyList"
             android:entryValues="@array/currencyListValues"
+            android:defaultValue="USD"
             android:dependency="auto_detect_locale" />
 
     </PreferenceCategory>
