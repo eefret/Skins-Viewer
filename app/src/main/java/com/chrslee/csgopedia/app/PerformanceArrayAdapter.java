@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +87,7 @@ public class PerformanceArrayAdapter extends ArrayAdapter<Item> {
             if (rarity.equals("Rare")) {
                 viewHolder.price.setTextColor(Color.rgb(255, 215, 0)); // yellow
             } else if (rarity.equals("Consumer")) {
-                viewHolder.price.setTextColor(Color.rgb(255, 255, 240)); // ivory white
+                viewHolder.price.setTextColor(Color.rgb(181,181,181)); // grey
             } else if (rarity.equals("Industrial")) {
                 viewHolder.price.setTextColor(Color.rgb(176, 195, 217)); // light blue
             } else if (rarity.equals("Mil-Spec")) {

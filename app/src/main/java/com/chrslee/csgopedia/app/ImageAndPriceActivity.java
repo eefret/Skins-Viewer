@@ -19,11 +19,7 @@ package com.chrslee.csgopedia.app;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -35,7 +31,6 @@ import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -47,16 +42,21 @@ public class ImageAndPriceActivity extends FragmentActivity {
     private ViewPager pager;
     private MyPagerAdapter adapter;
 
-    private Drawable oldBackground = null;
-
-    private static final int COLOR_VIOLET = Color.parseColor("#FF5161BC");
     private static final int RESULT_SETTINGS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLightTheme = prefs.getString("theme", "light").equals("light");
+
+        if (isLightTheme) {
+            setTheme(android.R.style.Theme_Holo_Light);
+        } else {
+            setTheme(android.R.style.Theme_Holo);
+        }
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        showUserSettings();
+        setContentView(R.layout.activity_image_and_price);
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
@@ -68,9 +68,14 @@ public class ImageAndPriceActivity extends FragmentActivity {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
 
-        tabs.setViewPager(pager);
+        // TODO: Bug - Black tab background completely overlaps indicator.
+        if (!isLightTheme) {
+            tabs.setTabBackground(R.color.tab_background_black);
+            tabs.setTextColor(Color.WHITE);
+        }
 
-        changeColor(COLOR_VIOLET);
+        tabs.setViewPager(pager);
+        tabs.setIndicatorColorResource(R.color.tab_indicator_cyan);
     }
 
     @Override
@@ -90,9 +95,11 @@ public class ImageAndPriceActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void changeColor(int newColor) {
 
+    private void changeColor(int newColor) {
+    /*
         tabs.setIndicatorColor(newColor);
+
 
         // change ActionBar color just if an ActionBar is available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -133,7 +140,9 @@ public class ImageAndPriceActivity extends FragmentActivity {
             getActionBar().setDisplayShowTitleEnabled(true);
 
         }
+    */
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -190,28 +199,5 @@ public class ImageAndPriceActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case RESULT_SETTINGS:
-                showUserSettings();
-                break;
-        }
-    }
-
-    private void showUserSettings() {
-        SharedPreferences sharedPrefs = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("\n Auto-detect currency: "
-                + sharedPrefs.getBoolean("auto_detect_locale", true));
-
-        builder.append("\n Custom currency: "
-                + sharedPrefs.getString("currency_list", "USD"));
-
-        TextView settingsTextView = (TextView) findViewById(R.id.textUserSettings);
-
-        settingsTextView.setText(builder.toString());
     }
 }

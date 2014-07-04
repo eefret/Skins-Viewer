@@ -9,21 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="48dip"
         android:background="@drawable/background_tabs"
-        app:pstsShouldExpand="true" />
+        app:pstsShouldExpand="true"
+        app:pstsIndicatorColor="#33B5E5"
+        app:pstsIndicatorHeight="2dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tabs"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabs"
         tools:context=".MainActivity" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textUserSettings"
-        android:layout_alignTop="@+id/pager"
-        android:layout_centerHorizontal="true"
-        tools:context=".MainActivity"/>
 
 </RelativeLayout>

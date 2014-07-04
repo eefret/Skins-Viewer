@@ -1,5 +1,7 @@
 package com.chrslee.csgopedia.app;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -7,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,14 +23,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpecificItemsActivity extends ActionBarActivity {
+public class SpecificItemsActivity extends Activity {
     private List<Item> myItems = new ArrayList<Item>();
     private int listType;
     PerformanceArrayAdapter adapter;
     String weaponName;
 
+    private SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getString("theme", "light").equals("light")) {
+            setTheme(android.R.style.Theme_Holo_Light);
+        } else {
+            setTheme(android.R.style.Theme_Holo);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_items);
 
@@ -51,10 +61,10 @@ public class SpecificItemsActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 int iconID = myItems.get(position).getIconID();
 
-                Intent fullScreenIntent = new Intent(SpecificItemsActivity.this, FullScreenImage.class);
-                fullScreenIntent.putExtra("iconID", iconID);
+                Intent imageAndPriceIntent = new Intent(SpecificItemsActivity.this, ImageAndPriceActivity.class);
+                imageAndPriceIntent.putExtra("iconID", iconID);
 
-                startActivity(fullScreenIntent);
+                startActivity(imageAndPriceIntent);
             }
         });
 
@@ -88,11 +98,11 @@ public class SpecificItemsActivity extends ActionBarActivity {
         });
 
         // Change title
-        getSupportActionBar().setTitle(itemName + " Skins");
+        ActionBar bar = getActionBar();
+        bar.setTitle(itemName + " Skins");
 
         // Show tutorial once
         // https://github.com/amlcurran/ShowcaseView
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("showedTutorial", false)) {
             new ShowcaseView.Builder(this, true)
                     .setTarget(new ViewTarget(findViewById(R.id.list2)))

@@ -1,8 +1,10 @@
 package com.chrslee.csgopedia.app;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
 /**
@@ -12,14 +14,17 @@ import android.util.AttributeSet;
 public class ListPreferenceShowSummary extends ListPreference {
 
     private final static String TAG = ListPreferenceShowSummary.class.getName();
+    private Context context;
 
     public ListPreferenceShowSummary(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         init();
     }
 
     public ListPreferenceShowSummary(Context context) {
         super(context);
+        this.context = context;
         init();
     }
 
@@ -27,6 +32,12 @@ public class ListPreferenceShowSummary extends ListPreference {
         setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference arg0, Object arg1) {
+                if (arg0.getKey().equals("theme")) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("changedTheme", false);
+                    editor.commit();
+                }
                 arg0.setSummary(getEntry());
                 return true;
             }

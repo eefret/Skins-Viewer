@@ -16,6 +16,7 @@
 
 package com.chrslee.csgopedia.app;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CardFragment extends Fragment {
@@ -62,12 +64,32 @@ public class CardFragment extends Fragment {
         TextView v = new TextView(getActivity());
         params.setMargins(margin, margin, margin, margin);
         v.setLayoutParams(params);
-        v.setLayoutParams(params);
         v.setGravity(Gravity.CENTER);
-        v.setBackgroundResource(R.drawable.background_card);
-        v.setText("CARD " + (position + 1));
+
+        LayoutParams imgParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // Convert 48dp top margin (tab strip) into px
+        Resources r = getActivity().getResources();
+        int px = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                48,
+                r.getDisplayMetrics()
+        );
+        imgParams.setMargins(0, px, 0, 0);
+
+        ImageView iv = new ImageView(getActivity());
+        iv.setLayoutParams(imgParams);
+        iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        iv.setAdjustViewBounds(true);
+
+        if (position == 0) {
+            iv.setBackgroundResource(getActivity().getIntent().getExtras().getInt("iconID"));
+        } else if (position == 1) {
+            //v.setBackgroundResource(R.drawable.background_card);
+        }
 
         fl.addView(v);
+        fl.addView(iv);
+
         return fl;
     }
 

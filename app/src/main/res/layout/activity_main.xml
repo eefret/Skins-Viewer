@@ -90,4 +90,6 @@
             android:layout_centerHorizontal="true"
             android:text="@string/cases" />
     </RelativeLayout>
+
+
 </ScrollView>

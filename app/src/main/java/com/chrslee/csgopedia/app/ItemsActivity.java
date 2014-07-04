@@ -1,10 +1,13 @@
 package com.chrslee.csgopedia.app;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemsActivity extends ActionBarActivity {
+public class ItemsActivity extends Activity {
     private List<Item> myItems = new ArrayList<Item>();
     private String itemType;
     private int listType;
 
+    private SharedPreferences prefs;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Violet action bar on light theme
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getString("theme", "light").equals("light")) {
+            setTheme(android.R.style.Theme_Holo_Light);
+        } else {
+            setTheme(android.R.style.Theme_Holo);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items);
 
@@ -59,7 +73,8 @@ public class ItemsActivity extends ActionBarActivity {
         });
 
         // Change title
-        getSupportActionBar().setTitle(itemType + " List");
+        ActionBar bar = getActionBar();
+        bar.setTitle(itemType + " List");
     }
 
     // Populate the arraylist with all of the weapons
