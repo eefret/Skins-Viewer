@@ -71,7 +71,7 @@
         <item name="USD">USD</item>
     </string-array>
     <string-array name="themeList">
-        <item name="light">Light Theme (default)</item>
+        <item name="light">Light Theme</item>
         <item name="dark">Dark Theme</item>
     </string-array>
     <string-array name="themeListValues">

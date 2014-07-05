@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Currency"
-        android:key="currency">
+        android:key="currency"
+        android:title="Currency">
 
         <SwitchPreference
+            android:defaultValue="true"
+            android:disableDependentsState="true"
             android:key="auto_detect_locale"
             android:summary="Display currency based on your phone's locale"
-            android:title="Auto-detection"
-            android:defaultValue="true"
-            android:disableDependentsState="true" />
+            android:title="Auto-detection" />
 
         <com.chrslee.csgopedia.app.ListPreferenceShowSummary
-            android:key="custom_currency"
-            android:title="Custom currency"
+            android:defaultValue="USD"
+            android:dependency="auto_detect_locale"
             android:entries="@array/currencyList"
             android:entryValues="@array/currencyListValues"
-            android:defaultValue="USD"
-            android:dependency="auto_detect_locale" />
+            android:key="custom_currency"
+            android:title="Custom currency" />
 
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Appearance"
-        android:key="appearance" >
+        android:key="appearance"
+        android:title="Appearance">
 
         <com.chrslee.csgopedia.app.ListPreferenceShowSummary
-            android:key="theme"
-            android:title="Theme"
+            android:defaultValue="light"
             android:entries="@array/themeList"
             android:entryValues="@array/themeListValues"
-        />
+            android:key="theme"
+            android:title="Theme" />
     </PreferenceCategory>
 
 </PreferenceScreen>

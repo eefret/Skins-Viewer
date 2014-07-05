@@ -47,24 +47,27 @@ public class NavigationDrawerSetup extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 switch (position) {
                     case 0:
-                        intent.putExtra("itemType", "Pistol");
+                        intent = new Intent(currentActivity, MainActivity.class);
                         break;
                     case 1:
-                        intent.putExtra("itemType", "Heavy");
+                        intent.putExtra("itemType", "Pistol");
                         break;
                     case 2:
-                        intent.putExtra("itemType", "SMG");
+                        intent.putExtra("itemType", "Heavy");
                         break;
                     case 3:
-                        intent.putExtra("itemType", "Rifle");
+                        intent.putExtra("itemType", "SMG");
                         break;
                     case 4:
-                        intent.putExtra("itemType", "Knife");
+                        intent.putExtra("itemType", "Rifle");
                         break;
                     case 5:
-                        intent.putExtra("itemType", "Map");
+                        intent.putExtra("itemType", "Knife");
                         break;
                     case 6:
+                        intent.putExtra("itemType", "Map");
+                        break;
+                    case 7:
                         intent.putExtra("itemType", "Case");
                         break;
                 }
