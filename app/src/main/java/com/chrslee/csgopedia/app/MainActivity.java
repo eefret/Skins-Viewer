@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -46,6 +48,19 @@ public class MainActivity extends ActionBarActivity {
         PerformanceArrayAdapter adapter = new PerformanceArrayAdapter(this, myItems);
         list.setAdapter(adapter);
 
+        // View image/price page
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                int iconID = myItems.get(position).getIconID();
+
+                Intent imageAndPriceIntent = new Intent(MainActivity.this, ImageAndPriceActivity.class);
+                imageAndPriceIntent.putExtra("iconID", iconID);
+
+                startActivity(imageAndPriceIntent);
+            }
+        });
+
         // Navigation drawer
         final String[] values = getResources().getStringArray(R.array.nav_drawer_items);
         ((ListView) findViewById(R.id.left_drawer0)).setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, values));
@@ -57,7 +72,10 @@ public class MainActivity extends ActionBarActivity {
     private void populateList() {
         SQLiteDatabase sqlDB = ItemsDatabase.getInstance(this).getReadableDatabase();
         // Select everything that's not a collection type
-        Cursor cursor = sqlDB.rawQuery("SELECT * FROM Skins WHERE Type != ? AND Type != ? ORDER BY Skin ASC", new String[]{"Map", "Case"});
+        Cursor cursor = sqlDB.rawQuery("SELECT * "
+                + "FROM Skins "
+                + "WHERE Type != ? AND Type != ? AND Skin != ?"
+                + "ORDER BY Skin ASC", new String[]{"Map", "Case", "Regular"});
         myItems = new ArrayList<Item>();
 
         while (cursor.moveToNext()) {

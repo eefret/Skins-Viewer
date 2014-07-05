@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
@@ -18,8 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.chrslee.csgopedia.app.util.Item;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,52 +67,9 @@ public class SpecificItemsActivity extends ActionBarActivity {
             }
         });
 
-        // Show marketplace page in browser
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String skinName = myItems.get(position).getItemName();
-                String wepName;
-
-                // Regular knives don't have a skin name
-                if (skinName.equals("Regular")) {
-                    skinName = "";
-                }
-                // For map/case lists, weapon name is placed in the description field of Item
-                if (listType == 2) {
-                    wepName = myItems.get(position).getDescription();
-                // Otherwise, weapon name is in bundle
-                } else {
-                    wepName = weaponName;
-                }
-
-                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+" + wepName +
-                        "+\"" + skinName + "\"";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
-                startActivity(browserIntent);
-
-                // True prevents normal click event from occurring as well
-                return true;
-            }
-        });
-
         // Change title
         ActionBar bar = getSupportActionBar();
         bar.setTitle(itemName + " Skins");
-
-        // Show tutorial once
-        // https://github.com/amlcurran/ShowcaseView
-        if (!prefs.getBoolean("showedTutorial", false)) {
-            new ShowcaseView.Builder(this, true)
-                    .setTarget(new ViewTarget(findViewById(R.id.list2)))
-                    .setContentTitle("View Steam Marketplace")
-                    .setContentText("Tap and hold to see a skin on the Steam Marketplace.")
-                    .setStyle(R.style.CustomShowcaseTheme)
-                    .build();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("showedTutorial", true);
-            editor.apply();
-        }
 
         // Navigation drawer
         final String[] values = getResources().getStringArray(R.array.nav_drawer_items);
