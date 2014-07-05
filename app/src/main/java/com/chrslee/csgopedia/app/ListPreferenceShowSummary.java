@@ -6,6 +6,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.widget.Toast;
 
 /**
  * http://stackoverflow.com/a/8004498
@@ -13,7 +14,7 @@ import android.util.AttributeSet;
  */
 public class ListPreferenceShowSummary extends ListPreference {
 
-    private final static String TAG = ListPreferenceShowSummary.class.getName();
+    //private final static String TAG = ListPreferenceShowSummary.class.getName();
     private Context context;
 
     public ListPreferenceShowSummary(Context context, AttributeSet attrs) {
@@ -37,6 +38,7 @@ public class ListPreferenceShowSummary extends ListPreference {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("changedTheme", false);
                     editor.commit();
+                    Toast.makeText(context, "Please restart the app for changes to take effect.", Toast.LENGTH_LONG).show();
                 }
                 arg0.setSummary(getEntry());
                 return true;

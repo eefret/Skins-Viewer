@@ -1,17 +1,19 @@
 package com.chrslee.csgopedia.app;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.chrslee.csgopedia.app.util.Item;
@@ -20,22 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ItemsActivity extends Activity {
+public class ItemsActivity extends ActionBarActivity {
     private List<Item> myItems = new ArrayList<Item>();
     private String itemType;
     private int listType;
 
-    private SharedPreferences prefs;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Violet action bar on light theme
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getString("theme", "light").equals("light")) {
-            setTheme(android.R.style.Theme_Holo_Light);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean isLightTheme = prefs.getString("theme", "light").equals("light");
+        if (isLightTheme) {
+            setTheme(R.style.AppThemeLight);
         } else {
-            setTheme(android.R.style.Theme_Holo);
+            setTheme(R.style.AppThemeDark);
         }
 
         super.onCreate(savedInstanceState);
@@ -73,8 +74,15 @@ public class ItemsActivity extends Activity {
         });
 
         // Change title
-        ActionBar bar = getActionBar();
+        ActionBar bar = getSupportActionBar();
         bar.setTitle(itemType + " List");
+
+        // Navigation drawer
+        final String[] values = getResources().getStringArray(R.array.nav_drawer_items);
+        ((ListView) findViewById(R.id.left_drawer1)).setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, values));
+        NavigationDrawerSetup nds = new NavigationDrawerSetup((ListView) findViewById(R.id.left_drawer1),
+                (DrawerLayout) findViewById(R.id.drawer_layout), values, getSupportActionBar(), this);
+        nds.configureDrawer();
     }
 
     // Populate the arraylist with all of the weapons

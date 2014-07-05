@@ -81,6 +81,8 @@ public class CardFragment extends Fragment {
         iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         iv.setAdjustViewBounds(true);
 
+        // Image gets left-aligned when screen orientation is landscape.
+        // Temporary solution - ImageAndPriceActivity is always shown in portrait mode.
         if (position == 0) {
             iv.setBackgroundResource(getActivity().getIntent().getExtras().getInt("iconID"));
         } else if (position == 1) {
