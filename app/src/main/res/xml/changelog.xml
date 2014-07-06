@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
     <release version="1.3" versioncode="10">
-        <change>UI updated. Drag from the left side of the screen to view skin categories.</change>
+        <change>UI updated. Drag from the left side of the screen on any page to view skin
+            categories.
+        </change>
         <change>Added a setting to change currency and theme.</change>
-        <change>Prices for item qualities (Battle-Scarred, Factory New, etc.) are now listed.</change>
+        <change>(Experimental) Prices for item qualities (Battle-Scarred, Factory New, etc.) are now
+            listed.
+        </change>
     </release>
     <release version="1.21" versioncode="9">
         <change>Added Operation Breakout skins and Butterfly Knives!</change>
