@@ -52,10 +52,13 @@ public class MainActivity extends ActionBarActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                int iconID = myItems.get(position).getIconID();
+                Item item = myItems.get(position);
+                int iconID = item.getIconID();
 
                 Intent imageAndPriceIntent = new Intent(MainActivity.this, ImageAndPriceActivity.class);
                 imageAndPriceIntent.putExtra("iconID", iconID);
+                // Weapon name - Skin name
+                imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " " + item.getItemName());
 
                 startActivity(imageAndPriceIntent);
             }

@@ -45,7 +45,7 @@ public class ListPreferenceShowSummary extends ListPreference {
                     builder.setMessage("Changing the theme will restart the app. Are you sure?")
                             .setTitle("Restart notice");
 
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User clicked OK button
                             // Go to MainActivity, and kill the app.
@@ -58,7 +58,7 @@ public class ListPreferenceShowSummary extends ListPreference {
                         }
                     });
 
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                         }
                     });

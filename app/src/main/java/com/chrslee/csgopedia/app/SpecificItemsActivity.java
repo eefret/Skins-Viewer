@@ -23,10 +23,10 @@ import java.util.List;
 
 
 public class SpecificItemsActivity extends ActionBarActivity {
-    private List<Item> myItems = new ArrayList<Item>();
-    private int listType;
     PerformanceArrayAdapter adapter;
     String weaponName;
+    private List<Item> myItems = new ArrayList<Item>();
+    private int listType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +58,26 @@ public class SpecificItemsActivity extends ActionBarActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                int iconID = myItems.get(position).getIconID();
+                Item item = myItems.get(position);
+                int iconID = item.getIconID();
 
                 Intent imageAndPriceIntent = new Intent(SpecificItemsActivity.this, ImageAndPriceActivity.class);
                 imageAndPriceIntent.putExtra("iconID", iconID);
+
+                if (!itemType.equals("Knife") && item.getItemName().equals("Regular")) {
+                    imageAndPriceIntent.putExtra("searchQuery", "-1"); // Regular non-knife skins are not in marketplace
+                } else if (itemType.equals("Knife") && item.getItemName().equals("Regular")) {
+                    imageAndPriceIntent.putExtra("searchQuery", weaponName); // Regular knife skins do not have "regular" in skin name
+                } else {
+                    // Map/box selected
+                    if (listType == 2) {
+                        // Weapon name - Skin name
+                        imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " " + item.getItemName());
+                    } else {
+                        // Weapon selected
+                        imageAndPriceIntent.putExtra("searchQuery", weaponName + " " + item.getItemName());
+                    }
+                }
 
                 startActivity(imageAndPriceIntent);
             }
