@@ -143,22 +143,17 @@ public class CardFragment extends Fragment {
      */
     private class ScraperAsyncTask extends AsyncTask<String, Void, HashMap<String, Double>> {
         TextView v;
-
+        double rate;
+        boolean isAutoDetected;
+        String symbol;
         protected ScraperAsyncTask(TextView view) {
             v = view;
         }
 
         @Override
         protected HashMap<String, Double> doInBackground(String... params) {
-            return PriceScraper.getPrices(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(HashMap<String, Double> priceData) {
-            String output = "";
-            boolean isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
-            String symbol = sharedPrefs.getString("custom_currency", "USD");
-            double rate;
+            isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
+            symbol = sharedPrefs.getString("custom_currency", "USD");
 
             // Auto locale detection on/off
             if (isAutoDetected) {
@@ -166,6 +161,12 @@ public class CardFragment extends Fragment {
             } else {
                 rate = new CurrencyRates(context).getRate(symbol);
             }
+            return PriceScraper.getPrices(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<String, Double> priceData) {
+            String output = "- Prices (beta) -\n\n";
 
             for (Quality q : Quality.values()) {
                 if (priceData.containsKey(q.displayName())) {
@@ -189,13 +190,5 @@ public class CardFragment extends Fragment {
             }
             v.setText(output);
         }
-
-
     }
 }
-
-/*
-SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
-symbol = sharedPrefs.getString("custom_currency", "USD");
- */

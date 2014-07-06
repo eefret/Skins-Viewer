@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -28,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -40,9 +42,24 @@ import com.astuetz.PagerSlidingTabStrip;
 // Note: ActionBarActivity also extends FragmentActivity
 public class ImageAndPriceActivity extends ActionBarActivity {
 
-    private final Handler handler = new Handler();
-
     private static final int RESULT_SETTINGS = 1;
+    private final Handler handler = new Handler();
+    private Drawable.Callback drawableCallback = new Drawable.Callback() {
+        @Override
+        public void invalidateDrawable(Drawable who) {
+            getSupportActionBar().setBackgroundDrawable(who);
+        }
+
+        @Override
+        public void scheduleDrawable(Drawable who, Runnable what, long when) {
+            handler.postAtTime(what, when);
+        }
+
+        @Override
+        public void unscheduleDrawable(Drawable who, Runnable what) {
+            handler.removeCallbacks(what);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +100,14 @@ public class ImageAndPriceActivity extends ActionBarActivity {
         NavigationDrawerSetup nds = new NavigationDrawerSetup((ListView) findViewById(R.id.left_drawer3),
                 (DrawerLayout) findViewById(R.id.drawer_layout), values, getSupportActionBar(), this);
         nds.configureDrawer();
+
+        ActionBar bar = getSupportActionBar();
+        bar.setTitle(getIntent().getExtras().getString("searchQuery"));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.settings_prices_fragment, menu);
         return true;
     }
 
@@ -95,8 +115,14 @@ public class ImageAndPriceActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                Intent i = new Intent(this, UserSettingsActivity.class);
-                startActivityForResult(i, RESULT_SETTINGS);
+                Intent settings = new Intent(this, UserSettingsActivity.class);
+                startActivityForResult(settings, RESULT_SETTINGS);
+                break;
+            case R.id.open_market:
+                String URL = "http://steamcommunity.com/market/search?q=appid%3A730+"
+                        + getIntent().getExtras().getString("searchQuery");
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
+                startActivity(browserIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -112,26 +138,14 @@ public class ImageAndPriceActivity extends ActionBarActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    private Drawable.Callback drawableCallback = new Drawable.Callback() {
-        @Override
-        public void invalidateDrawable(Drawable who) {
-            getSupportActionBar().setBackgroundDrawable(who);
-        }
-
-        @Override
-        public void scheduleDrawable(Drawable who, Runnable what, long when) {
-            handler.postAtTime(what, when);
-        }
-
-        @Override
-        public void unscheduleDrawable(Drawable who, Runnable what) {
-            handler.removeCallbacks(what);
-        }
-    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = { "Image", "Prices" };
+        private final String[] TITLES = {"Image", "Prices"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -152,10 +166,5 @@ public class ImageAndPriceActivity extends ActionBarActivity {
             return CardFragment.newInstance(position);
         }
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

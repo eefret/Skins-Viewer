@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity {
 
     private SharedPreferences prefs;
     private List<Item> myItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -58,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent imageAndPriceIntent = new Intent(MainActivity.this, ImageAndPriceActivity.class);
                 imageAndPriceIntent.putExtra("iconID", iconID);
                 // Weapon name - Skin name
-                imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " " + item.getItemName());
+                imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " | " + item.getItemName());
 
                 startActivity(imageAndPriceIntent);
             }
@@ -111,6 +112,7 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

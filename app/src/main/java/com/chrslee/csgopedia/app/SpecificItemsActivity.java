@@ -75,7 +75,7 @@ public class SpecificItemsActivity extends ActionBarActivity {
                         imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " " + item.getItemName());
                     } else {
                         // Weapon selected
-                        imageAndPriceIntent.putExtra("searchQuery", weaponName + " " + item.getItemName());
+                        imageAndPriceIntent.putExtra("searchQuery", weaponName + " | " + item.getItemName());
                     }
                 }
 
