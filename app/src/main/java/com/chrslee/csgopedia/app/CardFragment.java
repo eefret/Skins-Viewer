@@ -29,7 +29,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -86,30 +86,35 @@ public class CardFragment extends Fragment {
         iv.setBackgroundResource(getActivity().getIntent().getExtras().getInt("iconID"));
 
         // Second - prices section
-        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-                .getDisplayMetrics());
-        TextView v = new TextView(getActivity());
-        params.setMargins(margin, margin, margin, margin);
-        v.setLayoutParams(params);
-        v.setGravity(Gravity.CENTER);
+        //final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
+        //        .getDisplayMetrics());
+
+        LinearLayout linLayout = new LinearLayout(getActivity());
+        linLayout.setOrientation(LinearLayout.VERTICAL);
+        linLayout.setLayoutParams(params);
+        linLayout.setGravity(Gravity.CENTER);
 
         // Get prices
         ConnectionDetector cd = new ConnectionDetector(getActivity());
         String query = getActivity().getIntent().getStringExtra("searchQuery");
         if (cd.isConnectedToInternet()) {
             if (query.equals("-1")) {
-                v.setText("Regular skins are not for sale!");
+                TextView t = new TextView(getActivity());
+                t.setText("Regular skins are not for sale!");
+                linLayout.addView(t);
             } else {
-                new ScraperAsyncTask(v).execute(query);
+                new ScraperAsyncTask(linLayout).execute(query);
             }
         } else {
-            v.setText("Please connect to the Internet to view prices.");
+            TextView t = new TextView(getActivity());
+            t.setText("Please connect to the Internet to view prices.");
+            linLayout.addView(t);
         }
 
         if (position == 0) {
             fl.addView(iv);
         } else {
-            fl.addView(v);
+            fl.addView(linLayout);
         }
         return fl;
     }
@@ -142,16 +147,17 @@ public class CardFragment extends Fragment {
      * This task gets the starting prices for all qualities of a skin.
      */
     private class ScraperAsyncTask extends AsyncTask<String, Void, HashMap<String, Double>> {
-        TextView v;
+        LinearLayout l;
         double rate;
         boolean isAutoDetected;
         String symbol;
-        protected ScraperAsyncTask(TextView view) {
-            v = view;
+        protected ScraperAsyncTask(LinearLayout linLayout) {
+            l = linLayout;
         }
 
         @Override
         protected HashMap<String, Double> doInBackground(String... params) {
+            publishProgress();
             isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
             symbol = sharedPrefs.getString("custom_currency", "USD");
 
@@ -161,34 +167,52 @@ public class CardFragment extends Fragment {
             } else {
                 rate = new CurrencyRates(context).getRate(symbol);
             }
+
             return PriceScraper.getPrices(params[0]);
         }
 
         @Override
-        protected void onPostExecute(HashMap<String, Double> priceData) {
-            String output = "- Prices (beta) -\n\n";
+        protected void onProgressUpdate(Void... values) {
+            TextView t = new TextView(getActivity());
+            t.setText("Loading prices...");
+            t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            l.addView(t);
+        }
 
+        @Override
+        protected void onPostExecute(HashMap<String, Double> priceData) {
+            l.removeAllViewsInLayout();
+
+            TextView title = new TextView(getActivity());
+            title.setText("- Prices (beta) -");
+            title.setGravity(Gravity.CENTER_HORIZONTAL);
+            l.addView(title);
+
+            // See SpannableStrings if multi-colored text desired in the text
+            // (e.g. StatTrak orange, prices green)
             for (Quality q : Quality.values()) {
+                TextView price = new TextView(getActivity());
+                price.setGravity(Gravity.CENTER_HORIZONTAL);
+
                 if (priceData.containsKey(q.displayName())) {
                     if (isAutoDetected) {
-                        output += q.displayName()
+                        price.setText(q.displayName()
                                 + ": "
                                 + NumberFormat.getCurrencyInstance()
-                                .format(priceData.get(q.displayName()) * rate)
-                                + "\n";
+                                .format(priceData.get(q.displayName()) * rate));
                     } else {
-                        output += q.displayName() + ": "
+                        price.setText(q.displayName() + ": "
                                 + CurrencyFormatter.formatCurrencyValue(
                                 new BigDecimal(priceData.get(q.displayName()) * rate),
                                 Currency.getInstance(symbol))
-                                + " " + symbol
-                                + "\n";
+                                + " " + symbol);
                     }
                 } else {
-                    output += q.displayName() + ": Not Available\n";
+                    price.setText(q.displayName() + ": Not Available");
                 }
+
+                l.addView(price);
             }
-            v.setText(output);
         }
     }
 }
