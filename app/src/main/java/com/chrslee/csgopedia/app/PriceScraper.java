@@ -22,7 +22,7 @@ public class PriceScraper {
         knifeList.add("Butterfly Knife");
         knifeList.add("Flip Knife");
         knifeList.add("Gut Knife");
-        knifeList.add("Huntsman");
+        knifeList.add("Huntsman Knife");
         knifeList.add("Karambit");
         knifeList.add("M9 Bayonet");
 
@@ -62,7 +62,7 @@ public class PriceScraper {
                 String key = "";
                 double value = 0.0;
 
-                // TODO: Possible IndexOutOfBoundsException if weapon name + skin name is <= 5 letters long.
+                // TODO: Possible IndexOutOfBoundsException
                 String prefix = fullName.substring(0, 8);
                 if (prefix.equals("StatTrak") || prefix.equals("★ StatTr")) {
                     key += "ST ";

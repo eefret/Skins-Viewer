@@ -102,7 +102,12 @@ public class ImageAndPriceActivity extends ActionBarActivity {
         nds.configureDrawer();
 
         ActionBar bar = getSupportActionBar();
-        bar.setTitle(getIntent().getExtras().getString("searchQuery"));
+        String title = getIntent().getExtras().getString("searchQuery");
+        if (!title.equals("-1")) {
+            bar.setTitle(title);
+        } else {
+            bar.setTitle(getIntent().getExtras().getString("regularName"));
+        }
     }
 
     @Override

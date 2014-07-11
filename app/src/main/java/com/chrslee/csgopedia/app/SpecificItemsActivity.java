@@ -66,13 +66,14 @@ public class SpecificItemsActivity extends ActionBarActivity {
 
                 if (!itemType.equals("Knife") && item.getItemName().equals("Regular")) {
                     imageAndPriceIntent.putExtra("searchQuery", "-1"); // Regular non-knife skins are not in marketplace
+                    imageAndPriceIntent.putExtra("regularName", weaponName);
                 } else if (itemType.equals("Knife") && item.getItemName().equals("Regular")) {
                     imageAndPriceIntent.putExtra("searchQuery", weaponName); // Regular knife skins do not have "regular" in skin name
                 } else {
                     // Map/box selected
                     if (listType == 2) {
                         // Weapon name - Skin name
-                        imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " " + item.getItemName());
+                        imageAndPriceIntent.putExtra("searchQuery", item.getDescription() + " | " + item.getItemName());
                     } else {
                         // Weapon selected
                         imageAndPriceIntent.putExtra("searchQuery", weaponName + " | " + item.getItemName());
