@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CS:GO Skins Viewer</string>
     <string name="action_settings">Settings</string>
     <string name="title_changelog">Update Notes</string>
     <string name="changelog_close">Close</string>
@@ -16,9 +15,6 @@
         <item>Maps</item>
         <item>Cases</item>
     </string-array>
-
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
 
     <string name="abyss">Abyss</string>
     <string name="acid_fade">Acid Fade</string>

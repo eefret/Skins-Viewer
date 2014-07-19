@@ -14,3 +14,4 @@ and [item_view.xml](https://github.com/c133/csgopedia/blob/master/app/src/main/r
 5. Make navigation drawer work correctly. Currently, the up navigation button does not open the
 drawer, and the drawer indicator (the three horizontal lines next to the app icon) does not "retract"
 when the drawer is opened.
+6. Add a search function.
