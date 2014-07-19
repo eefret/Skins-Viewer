@@ -73,13 +73,13 @@ public class CardFragment extends Fragment {
 
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
-        FrameLayout fl = new FrameLayout(getActivity());
+        FrameLayout fl = new FrameLayout(context);
         fl.setLayoutParams(params);
 
         // First - image section
         LayoutParams imgParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         imgParams.gravity = Gravity.CENTER;
-        ImageView iv = new ImageView(getActivity());
+        ImageView iv = new ImageView(context);
         iv.setLayoutParams(imgParams);
         iv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         iv.setAdjustViewBounds(true);
@@ -89,26 +89,25 @@ public class CardFragment extends Fragment {
         //final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
         //        .getDisplayMetrics());
 
-        LinearLayout linLayout = new LinearLayout(getActivity());
+        LinearLayout linLayout = new LinearLayout(context);
         linLayout.setOrientation(LinearLayout.VERTICAL);
         linLayout.setLayoutParams(params);
         linLayout.setGravity(Gravity.CENTER);
 
         // Get prices
-        ConnectionDetector cd = new ConnectionDetector(getActivity());
+        ConnectionDetector cd = new ConnectionDetector(context);
         String query = getActivity().getIntent().getStringExtra("searchQuery");
+        TextView placeholder = new TextView(context);
         if (cd.isConnectedToInternet()) {
             if (query.equals("-1")) {
-                TextView t = new TextView(getActivity());
-                t.setText("Regular skins are not for sale!");
-                linLayout.addView(t);
+                placeholder.setText("Regular skins are not for sale!");
+                linLayout.addView(placeholder);
             } else {
                 new ScraperAsyncTask(linLayout).execute(query);
             }
         } else {
-            TextView t = new TextView(getActivity());
-            t.setText("Please connect to the Internet to view prices.");
-            linLayout.addView(t);
+            placeholder.setText("Please connect to the Internet to view prices.");
+            linLayout.addView(placeholder);
         }
 
         if (position == 0) {
@@ -119,7 +118,7 @@ public class CardFragment extends Fragment {
         return fl;
     }
 
-    private enum Quality {
+    public enum Quality {
         ST_FACTORY_NEW("ST Factory New"),
         ST_MINIMAL_WEAR("ST Minimal Wear"),
         ST_FIELD_TESTED("ST Field-Tested"),
@@ -151,13 +150,18 @@ public class CardFragment extends Fragment {
         double rate;
         boolean isAutoDetected;
         String symbol;
+        TextView loading;
+
         protected ScraperAsyncTask(LinearLayout linLayout) {
             l = linLayout;
+            loading = new TextView(context);
+            loading.setText("Loading...");
+            loading.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+            l.addView(loading);
         }
 
         @Override
         protected HashMap<String, Double> doInBackground(String... params) {
-            publishProgress();
             isAutoDetected = sharedPrefs.getBoolean("auto_detect_locale", true);
             symbol = sharedPrefs.getString("custom_currency", "USD");
 
@@ -173,25 +177,16 @@ public class CardFragment extends Fragment {
 
         @Override
         protected void onProgressUpdate(Void... values) {
-            TextView t = new TextView(getActivity());
-            t.setText("Loading prices...");
-            t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            l.addView(t);
         }
 
         @Override
         protected void onPostExecute(HashMap<String, Double> priceData) {
             l.removeAllViewsInLayout();
 
-            TextView title = new TextView(getActivity());
-            title.setText("- Prices (beta) -");
-            title.setGravity(Gravity.CENTER_HORIZONTAL);
-            l.addView(title);
-
             // See SpannableStrings if multi-colored text desired in the text
             // (e.g. StatTrak orange, prices green)
             for (Quality q : Quality.values()) {
-                TextView price = new TextView(getActivity());
+                TextView price = new TextView(context);
                 price.setGravity(Gravity.CENTER_HORIZONTAL);
 
                 if (priceData.containsKey(q.displayName())) {
