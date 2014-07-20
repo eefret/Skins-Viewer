@@ -83,10 +83,10 @@ public class MainActivity extends ActionBarActivity {
         myItems = new ArrayList<Item>();
 
         while (cursor.moveToNext()) {
-            String skinName = cursor.getString(cursor.getColumnIndex("Skin"));
-            // Get reference ID
+            int stringRef = getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Skin")), "string", getPackageName());
+            String skinName = getResources().getString(stringRef);
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
-                    "drawable", this.getPackageName());
+                    "drawable", getPackageName());
             String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));
             String wepName = cursor.getString(cursor.getColumnIndex("Name"));
 
