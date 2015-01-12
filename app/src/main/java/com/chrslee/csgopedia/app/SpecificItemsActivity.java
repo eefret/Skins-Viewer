@@ -112,9 +112,8 @@ public class SpecificItemsActivity extends ActionBarActivity {
         }
 
         while (cursor.moveToNext()) {
-            String packageName = this.getPackageName();
-            int stringRef = getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Skin")), "string", packageName);
-            String skinName = getResources().getString(stringRef);
+            String skinName = cursor.getString(cursor.getColumnIndex("Skin"));
+            // Get reference ID
             int imageRef = this.getResources().getIdentifier(cursor.getString(cursor.getColumnIndex("Image")),
                     "drawable", this.getPackageName());
             String rarity = cursor.getString(cursor.getColumnIndex("Rarity"));

@@ -95,7 +95,7 @@
     <string name="death_rattle">Death Rattle</string>
     <string name="demeter">Demeter</string>
     <string name="demolition">Demolition</string>
-    <string name="desert_strike">Desert-Strike</string>
+    <string name="desert-strike">Desert-Strike</string>
     <string name="desert_storm">Desert Storm</string>
     <string name="desert_warfare">Desert Warfare</string>
     <string name="detour">Detour</string>
@@ -275,7 +275,7 @@
     <string name="whiteout">Whiteout</string>
     <string name="wings">Wings</string>
     <string name="winter_forest">Winter Forest</string>
-    <string name="x_ray">X-Ray</string>
+    <string name="x-ray">X-Ray</string>
     <string name="zirka">Zirka</string>
 
 </resources>
