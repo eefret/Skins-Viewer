@@ -4,14 +4,14 @@ An Android app that serves as a reference guide for all Counter-Strike: Global O
 
 To-do list:
 
-1. Improve the UI for the price display section (CardFragment.java).
+1. Implement Material design.
 2. Find a way to automatically retrieve new skin releases and update the database.
 3. Fix spaghetti code residing in ItemsActivity and SpecificItemsActivity, caused by the need to
 switch text display fields
 (refer to [Item.java](https://github.com/c133/csgopedia/blob/master/app/src/main/java/com/chrslee/csgopedia/app/util/Item.java)
 and [item_view.xml](https://github.com/c133/csgopedia/blob/master/app/src/main/res/layout/item_view.xml)).
-4. Support only API 14 and up.
-5. Make navigation drawer work correctly. Currently, the up navigation button does not open the
-drawer, and the drawer indicator (the three horizontal lines next to the app icon) does not "retract"
-when the drawer is opened.
-6. Add a search function.
+4. Make navigation drawer work correctly. Currently, the up navigation button does not open the
+drawer, and the drawer indicator (hamburger icon) does not "retract" when the drawer is opened.
+5. Avoid rate limiting from market by querying for prices using this format:
+
+        http://steamcommunity.com/market/priceoverview/?country=US&currency=1&appid=730&market_hash_name=AK-47%20%7C%20Redline%20%28Minimal%20Wear%29
