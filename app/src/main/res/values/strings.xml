@@ -367,9 +367,9 @@
     <!-- Collections -->
     <string name="no_collection">Not part of a collection</string>
     <!-- Cases -->
-    <string name="cs:go_weapon_case">CS:GO Weapon Case</string>
-    <string name="cs:go_weapon_case_2">CS:GO Weapon Case 2</string>
-    <string name="cs:go_weapon_case_3">CS:GO Weapon Case 3</string>
+    <string name="cs_go_weapon_case">CS:GO Weapon Case</string>
+    <string name="cs_go_weapon_case_2">CS:GO Weapon Case 2</string>
+    <string name="cs_go_weapon_case_3">CS:GO Weapon Case 3</string>
     <string name="chroma_case">Chroma Case</string>
     <string name="huntsman_weapon_case">Huntsman Weapon Case</string>
     <string name="operation_bravo_case">Operation Bravo Case</string>
