@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -20,16 +20,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true" />
-        <!-- solves issue where drawer can't be pulled out beyond ~5% -->
+        <!-- clickable solves issue where drawer sometimes can't be pulled out beyond ~5% -->
 
-        <fragment
-            android:id="@+id/fragment_navigation_drawer"
-            android:name="com.marvinsyan.csgoskinsviewer.NavigationDrawerFragment"
-            app:layout="@layout/fragment_navigation_drawer"
-            tools:layout="@layout/fragment_navigation_drawer"
+        <ListView
+            android:id="@+id/drawer_list"
             android:layout_width="@dimen/nav_drawer_width"
             android:layout_height="match_parent"
-            android:layout_gravity="start" />
+            android:layout_gravity="start"
+            android:background="@color/material_blue_grey_950"
+            android:orientation="vertical" />
 
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

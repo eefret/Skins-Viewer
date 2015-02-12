@@ -2,8 +2,8 @@
 <resources>
 
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <!-- Change nav bar color
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        -->
     </style>
 </resources>

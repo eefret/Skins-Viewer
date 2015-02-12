@@ -8,12 +8,4 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <!--
-    TODO: filter function on toolbar
-    <item
-        android:id="+@id/filter"
-        android:icon="@drawable/filter"
-        android:orderInCategory="200"
-        android:title="@string/next" />
-    -->
 </menu>

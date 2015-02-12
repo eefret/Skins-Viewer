@@ -6,15 +6,20 @@
     <string name="action_settings">Settings</string>
     <string name="next">Next</string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">All Skins</string>
     <string name="title_activity_sub">SubActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string-array name="drawer_list">
+        <item>Pistols</item>
+        <item>Heavy</item>
+        <item>SMGs</item>
+        <item>Rifles</item>
+        <item>Knives</item>
+        <item>Cases</item>
+        <item>Maps</item>
+    </string-array>
 
     <!-- Weapon models -->
     <string name="ak_47">AK-47</string>
