@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,38 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
                 decodeSampledBitmapFromResource(context.getResources(), current.imageId, IMAGE_DIMENS, IMAGE_DIMENS));
         holder.gunName.setText(context.getString(current.gunNameId));
         holder.skinName.setText(context.getString(current.skinNameId));
-        holder.rarity.setText(context.getString(current.rarityId));
+
+        String rarity = context.getString(current.rarityId);
+        holder.rarity.setText(rarity);
+        // Assign rarity colors TODO: Change rgb to hex (reused code from v1)
+        if (rarity.equals(context.getString(R.string.consumer_grade))) {
+            holder.rarity.setTextColor(Color.rgb(181, 181, 181)); // grey
+        } else if (rarity.equals(context.getString(R.string.industrial_grade))) {
+            holder.rarity.setTextColor(Color.rgb(176, 195, 217)); // light blue
+        } else if (rarity.equals(context.getString(R.string.mil_spec))) {
+            holder.rarity.setTextColor(Color.rgb(75, 105, 255)); // blue
+        } else if (rarity.equals(context.getString(R.string.restricted))) {
+            holder.rarity.setTextColor(Color.rgb(136, 71, 255)); // purple
+        } else if (rarity.equals(context.getString(R.string.classified))) {
+            holder.rarity.setTextColor(Color.rgb(211, 44, 230)); // pinkish-purple
+        } else if (rarity.equals(context.getString(R.string.covert))) {
+            holder.rarity.setTextColor(Color.rgb(235, 75, 75)); // red
+        } else if (rarity.equals(context.getString(R.string.contraband))) {
+            holder.rarity.setTextColor(Color.rgb(255, 165, 0)); // light orange
+        } else if (rarity.equals(context.getString(R.string.no_rarity))) {
+            holder.rarity.setTextColor(Color.rgb(215,215,215)); // greyish
+        }
+
         holder.collection.setText(context.getString(current.collectionId));
-        holder.special.setText(context.getString(current.specialId));
+
+        String special = context.getString(current.specialId);
+        holder.special.setText(special);
+        // Assign StatTrak/Souvenir colors
+        if (special.equals(context.getString(R.string.stattrak_available))) {
+            holder.special.setTextColor(Color.parseColor("#cf6a32"));
+        } else if (special.equals(context.getString(R.string.souvenir_available))) {
+            holder.special.setTextColor(Color.parseColor("#ffd700"));
+        }
 
         holder.setClickListener(new RecyclerViewHolder.ClickListener() {
             @Override
