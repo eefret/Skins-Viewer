@@ -13,12 +13,12 @@ import com.chrslee.csgopedia.app.R;
 /**
  * Created by Marvin on 2/11/2015.
  */
-public class CustomListViewAdapter extends BaseAdapter {
+public class CustomListAdapter extends BaseAdapter {
     private String[] titles;
     private int[] images;
     private static LayoutInflater inflater = null;
 
-    public CustomListViewAdapter(Context context, String[] drawerListItems, int[] imageIds) {
+    public CustomListAdapter(Context context, String[] drawerListItems, int[] imageIds) {
         titles = drawerListItems;
         images = imageIds;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,9 +47,9 @@ public class CustomListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
-        View rowView = inflater.inflate(R.layout.drawer_row, null);
-        holder.imageView = (ImageView) rowView.findViewById(R.id.list_icon);
-        holder.textView = (TextView) rowView.findViewById(R.id.list_text);
+        View rowView = inflater.inflate(R.layout.drawer_item, null);
+        holder.imageView = (ImageView) rowView.findViewById(R.id.drawer_list_icon);
+        holder.textView = (TextView) rowView.findViewById(R.id.drawer_list_text);
         holder.imageView.setImageResource(images[position]); // Get hardcoded images
         holder.textView.setText(titles[position]); // Get titles from strings.xml
         return rowView;

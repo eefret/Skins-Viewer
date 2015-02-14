@@ -160,6 +160,7 @@
     <string name="detour">Detour</string>
     <string name="doomkitty">Doomkitty</string>
     <string name="doppler">Doppler</string>
+    <string name="dragon_king">龍王 (Dragon King)</string>
     <string name="dragon_lore">Dragon Lore</string>
     <string name="dragon_tattoo">Dragon Tattoo</string>
     <string name="dry_season">Dry Season</string>
@@ -346,6 +347,7 @@
     <string name="urban_perforated">Urban Perforated</string>
     <string name="urban_rubble">Urban Rubble</string>
     <string name="urban_shock">Urban Shock</string>
+    <string name="vanilla">Vanilla</string>
     <string name="varicamo">VariCamo</string>
     <string name="varicamo_blue">VariCamo Blue</string>
     <string name="victoria">Victoria</string>
@@ -362,7 +364,6 @@
     <string name="winter_forest">Winter Forest</string>
     <string name="x_ray">X-Ray</string>
     <string name="zirka">Zirka</string>
-    <string name="dragon_king">龍王 (Dragon King)</string>
 
     <!-- Rarity grades -->
     <string name="classified">Classified</string>
@@ -372,6 +373,7 @@
     <string name="industrial_grade">Industrial Grade</string>
     <string name="mil_spec">Mil-Spec</string>
     <string name="restricted">Restricted</string>
+    <string name="no_rarity">Default Skin</string>
 
     <!-- Weapon types -->
     <string name="heavy">Heavy</string>
@@ -417,8 +419,9 @@
     <string name="the_safehouse_collection">The Safehouse Collection</string>
     <string name="the_train_collection">The Train Collection</string>
     <string name="the_vertigo_collection">The Vertigo Collection</string>
-    <string name="no_special">Souvenir/StatTrak Unavailable</string>
-    <string name="souvenir_available">Souvenir Available</string>
-    <string name="stattrak_available">StatTrak Available</string>
+
+    <string name="no_special"></string>
+    <string name="souvenir_available">Souvenir</string>
+    <string name="stattrak_available">StatTrak</string>
 
 </resources>

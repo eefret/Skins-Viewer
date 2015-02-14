@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF3D00</color>
+    <color name="colorPrimary">#ff34276c</color>
+    <color name="colorPrimaryDark">#ff291b56</color>
+    <color name="colorAccent">#ff3D00</color>
+    <color name="divider">#ff52504f</color>
 </resources>
