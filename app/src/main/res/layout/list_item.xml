@@ -20,8 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fire_serpent"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:padding="8dp"
+        android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/list_icon"
@@ -39,16 +40,6 @@
         android:layout_alignEnd="@id/list_icon"/>
 
     <TextView
-        android:id="@+id/list_collection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/operation_bravo_case"
-        android:textSize="13sp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/textView"
-        android:layout_toStartOf="@+id/textView" />
-
-    <TextView
         android:id="@+id/list_rarity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,15 +50,24 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        android:id="@+id/list_divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" | "
         android:textSize="13sp"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/list_rarity"
-        android:layout_toStartOf="@id/list_rarity"
-        android:id="@+id/textView" />
+        android:layout_toStartOf="@id/list_rarity" />
 
+    <TextView
+        android:id="@+id/list_collection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/operation_bravo_case"
+        android:textSize="13sp"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/list_divider"
+        android:layout_toStartOf="@id/list_divider" />
     <TextView
         android:id="@+id/list_special"
         android:layout_width="wrap_content"

@@ -11,7 +11,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:launchMode="singleTop"> <!-- Show back button fade out instead of new activity fade in -->
+            android:launchMode="singleTop"> <!-- Up navigation with slide down transition -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.marvinsyan.csgoskinsviewer.SubActivity"
+            android:name="com.marvinsyan.csgoskinsviewer.TypeActivity"
             android:label="@string/title_activity_sub"
             android:screenOrientation="portrait">
             <meta-data

@@ -10,6 +10,7 @@
     <string name="title_activity_sub">SubActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="blank_string"></string>
 
     <string-array name="drawer_list">
         <item>Pistols</item>
@@ -373,7 +374,7 @@
     <string name="industrial_grade">Industrial Grade</string>
     <string name="mil_spec">Mil-Spec</string>
     <string name="restricted">Restricted</string>
-    <string name="no_rarity">Default Skin</string>
+    <string name="no_rarity">Default</string>
 
     <!-- Weapon types -->
     <string name="heavy">Heavy</string>
@@ -383,7 +384,7 @@
     <string name="smg">SMG</string>
 
     <!-- Collections -->
-    <string name="no_collection">Not part of a collection</string>
+    <string name="no_collection">No Collection</string>
     <!-- Cases -->
     <string name="cs_go_weapon_case">CS:GO Weapon Case</string>
     <string name="cs_go_weapon_case_2">CS:GO Weapon Case 2</string>
@@ -423,5 +424,7 @@
     <string name="no_special"></string>
     <string name="souvenir_available">Souvenir</string>
     <string name="stattrak_available">StatTrak</string>
+    <string name="weapons">Weapons</string>
+    <string name="collections">Collections</string>
 
 </resources>

@@ -17,6 +17,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
     public TextView rarity;
     public TextView collection;
     public TextView special;
+    public TextView divider;
     private ClickListener clickListener;
 
     public RecyclerViewHolder(View itemView) {
@@ -27,6 +28,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.
         rarity = (TextView) itemView.findViewById(R.id.list_rarity);
         collection = (TextView) itemView.findViewById(R.id.list_collection);
         special = (TextView) itemView.findViewById(R.id.list_special);
+        divider = (TextView) itemView.findViewById(R.id.list_divider);
         itemView.setOnClickListener(this);
     }
 

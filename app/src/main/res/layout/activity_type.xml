@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.marvinsyan.csgoskinsviewer.SubActivity">
+    tools:context="com.marvinsyan.csgoskinsviewer.TypeActivity">
 
     <include
         android:id="@+id/app_bar_sub"
@@ -14,6 +14,7 @@
         android:id="@+id/recycler_sub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:background="@color/primary_material_dark" />
 
 </LinearLayout>
