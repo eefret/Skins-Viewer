@@ -68,6 +68,7 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         startActivity(typeActivityIntent);
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
                 }, 250);
             }
@@ -131,12 +132,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        databaseHelper.close();
     }
 
     // When device is rotated...

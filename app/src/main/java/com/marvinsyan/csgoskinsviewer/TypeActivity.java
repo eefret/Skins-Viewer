@@ -114,10 +114,18 @@ public class TypeActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.home) {
+        if (id == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        this.finish();
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 }

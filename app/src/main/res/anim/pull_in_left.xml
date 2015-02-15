@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Animations from http://madcoda.com/2013/09/android-activity-transition-slide-in-out-animation/ -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="300"
+    android:fromXDelta="-100%"
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:toXDelta="0%" />
