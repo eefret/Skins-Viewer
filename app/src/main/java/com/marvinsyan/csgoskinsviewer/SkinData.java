@@ -10,7 +10,7 @@ public class SkinData {
     public int rarityId;
     public int collectionId;
     public int specialId;
-    public int titleId;
+    public String title;
 
     public SkinData(int imageId, int gunNameId, int skinNameId, int rarityId, int collectionId, int specialId) {
         this.imageId = imageId;
@@ -23,8 +23,8 @@ public class SkinData {
 
     // For TypeActivity
     // Should display the collection or weapon name where the skin name usually appears
-    public SkinData(int imageId, int weaponOrCollectionNameId) {
+    public SkinData(int imageId, String rawWeaponOrCollectionName) {
         this.imageId = imageId;
-        this.titleId = weaponOrCollectionNameId;
+        this.title = rawWeaponOrCollectionName;
     }
 }

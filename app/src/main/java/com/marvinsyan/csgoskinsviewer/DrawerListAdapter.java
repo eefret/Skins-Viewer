@@ -13,12 +13,12 @@ import com.chrslee.csgopedia.app.R;
 /**
  * Created by Marvin on 2/11/2015.
  */
-public class CustomListAdapter extends BaseAdapter {
+public class DrawerListAdapter extends BaseAdapter {
     private String[] titles;
     private int[] images;
     private static LayoutInflater inflater = null;
 
-    public CustomListAdapter(Context context, String[] drawerListItems, int[] imageIds) {
+    public DrawerListAdapter(Context context, String[] drawerListItems, int[] imageIds) {
         titles = drawerListItems;
         images = imageIds;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

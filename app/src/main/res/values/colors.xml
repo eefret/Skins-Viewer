@@ -3,6 +3,6 @@
     <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
     <color name="colorPrimary">#ff34276c</color>
     <color name="colorPrimaryDark">#ff291b56</color>
-    <color name="colorAccent">#ff3D00</color>
+    <color name="colorAccent">#536DFE</color>
     <color name="divider">#ff52504f</color>
 </resources>

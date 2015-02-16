@@ -17,9 +17,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.marvinsyan.csgoskinsviewer.CustomListAdapter;
-import com.marvinsyan.csgoskinsviewer.CustomRecyclerAdapter;
 import com.marvinsyan.csgoskinsviewer.DatabaseHelper;
+import com.marvinsyan.csgoskinsviewer.DrawerListAdapter;
+import com.marvinsyan.csgoskinsviewer.MainRecyclerAdapter;
+import com.marvinsyan.csgoskinsviewer.SettingsActivity;
 import com.marvinsyan.csgoskinsviewer.SimpleDividerItemDecoration;
 import com.marvinsyan.csgoskinsviewer.SkinData;
 import com.marvinsyan.csgoskinsviewer.TypeActivity;
@@ -56,8 +57,11 @@ public class MainActivity extends ActionBarActivity {
         int[] imageIds = {R.drawable.desert_eagle_vanilla, R.drawable.negev_vanilla,
                 R.drawable.p90_vanilla, R.drawable.ak_47_vanilla, R.drawable.bayonet_vanilla,
                 R.drawable.chroma_case, R.drawable.the_dust_2_collection};
-        mDrawerList.setAdapter(new CustomListAdapter(this, mDrawerListItems, imageIds));
+
+        mDrawerList.setAdapter(new DrawerListAdapter(this, mDrawerListItems, imageIds));
         final Intent typeActivityIntent = new Intent(this, TypeActivity.class);
+
+        // Drawer row click listener
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -68,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         startActivity(typeActivityIntent);
+                        // Pull new activity into view, push old activity out of view
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
                 }, 250);
@@ -96,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
         // Set up RecyclerView
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CustomRecyclerAdapter mAdapter = new CustomRecyclerAdapter(this);
+        MainRecyclerAdapter mAdapter = new MainRecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
         // Load database
@@ -134,7 +139,6 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.syncState();
     }
 
-    // When device is rotated...
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
@@ -156,7 +160,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, TypeActivity.class));
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivityForResult(i, 1);
             return true;
         }
         return super.onOptionsItemSelected(item);

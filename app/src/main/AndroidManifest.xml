@@ -14,17 +14,31 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.marvinsyan.csgoskinsviewer.TypeActivity"
-            android:label="@string/title_activity_sub"
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_type"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.chrslee.csgopedia.app.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.marvinsyan.csgoskinsviewer.ResultsActivity"
+            android:label="@string/title_activity_results"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marvinsyan.csgoskinsviewer.TypeActivity" />
+        </activity>
+        <activity
+            android:name="com.marvinsyan.csgoskinsviewer.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

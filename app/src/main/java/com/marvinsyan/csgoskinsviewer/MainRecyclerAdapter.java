@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.chrslee.csgopedia.app.MainActivity;
 import com.chrslee.csgopedia.app.R;
 
 import java.util.ArrayList;
@@ -18,16 +20,13 @@ import java.util.ArrayList;
 /**
  * Created by Marvin on 2/12/2015.
  */
-public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<SkinData> mSkinData = new ArrayList<>();
     private Context context;
     private final int IMAGE_DIMENS = 100; // Increase to improve image quality at the cost of performance
-    private Class nextClass;
 
-    // TODO: fix routing
-    public CustomRecyclerAdapter(Context context) {
+    public MainRecyclerAdapter(Context context) {
         this.context = context;
-        this.nextClass = nextClass;
     }
 
     @Override
@@ -80,11 +79,12 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         holder.setClickListener(new RecyclerViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent i = new Intent(context, nextClass);
-                i.putExtra("image_resource", current.imageId);
+                Intent i = new Intent(context, MainActivity.class);
                 i.putExtra("weapon_name", current.gunNameId);
                 // TODO: Will affect market price lookup if language is not English
                 i.putExtra("skin_name", current.skinNameId);
+                i.putExtra("type", "skin");
+                Toast.makeText(context, "Show image and price now", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -139,6 +139,10 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        // Further improve memory usage
+        // http://stackoverflow.com/a/21394281/3505851
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        options.inDither = true;
         return BitmapFactory.decodeResource(res, resId, options);
     }
 }
