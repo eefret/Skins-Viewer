@@ -1,10 +1,12 @@
-package com.chrslee.csgopedia.app;
+package com.marvinsyan.csgoskinsviewer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,14 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import com.marvinsyan.csgoskinsviewer.DatabaseHelper;
-import com.marvinsyan.csgoskinsviewer.DrawerListAdapter;
-import com.marvinsyan.csgoskinsviewer.MainRecyclerAdapter;
-import com.marvinsyan.csgoskinsviewer.SettingsActivity;
-import com.marvinsyan.csgoskinsviewer.SimpleDividerItemDecoration;
-import com.marvinsyan.csgoskinsviewer.SkinData;
-import com.marvinsyan.csgoskinsviewer.TypeActivity;
 
 import java.util.ArrayList;
 
@@ -39,8 +33,31 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Light/Dark theme
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLightTheme = prefs.getString("theme", "light").equals("light");
+        if (isLightTheme) {
+            setTheme(R.style.AppTheme_Base_Light);
+
+            // Needs to be after setTheme
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            findViewById(R.id.drawer_list).setBackgroundColor(
+                    getResources().getColor(R.color.cardview_light_background));
+            findViewById(R.id.app_bar).setBackgroundColor(
+                    getResources().getColor(R.color.colorPrimary));
+        } else {
+            setTheme(R.style.AppTheme_Base_Dark);
+
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+            findViewById(R.id.drawer_list).setBackgroundColor(
+                    getResources().getColor(R.color.cardview_dark_background));
+            findViewById(R.id.app_bar).setBackgroundColor(
+                    getResources().getColor(R.color.darkColorPrimary));
+        }
 
         // Show toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -130,7 +147,6 @@ public class MainActivity extends ActionBarActivity {
             cursor.close();
         }
         mAdapter.addData(data);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
     }
 
     @Override

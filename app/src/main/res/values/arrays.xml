@@ -70,4 +70,12 @@
         <item name="TRY">TRY</item>
         <item name="USD">USD</item>
     </string-array>
+    <string-array name="theme_list">
+        <item name="light">Light</item>
+        <item name="dark">Dark</item>
+    </string-array>
+    <string-array name="theme_list_values">
+        <item name="light">light</item>
+        <item name="dark">dark</item>
+    </string-array>
 </resources>

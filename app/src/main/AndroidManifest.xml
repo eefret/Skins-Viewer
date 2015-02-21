@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.chrslee.csgopedia.app">
+    package="com.marvinsyan.csgoskinsviewer">
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Base.Light">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -18,16 +18,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.marvinsyan.csgoskinsviewer.TypeActivity"
+            android:name=".TypeActivity"
             android:label="@string/title_activity_type"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.chrslee.csgopedia.app.MainActivity" />
+                android:value="com.marvinsyan.csgoskinsviewer.MainActivity" />
         </activity>
         <activity
-            android:name="com.marvinsyan.csgoskinsviewer.ResultsActivity"
+            android:name=".ResultsActivity"
             android:label="@string/title_activity_results"
             android:screenOrientation="portrait"
             android:launchMode="singleTop">
@@ -36,7 +36,7 @@
                 android:value="com.marvinsyan.csgoskinsviewer.TypeActivity" />
         </activity>
         <activity
-            android:name="com.marvinsyan.csgoskinsviewer.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait">
         </activity>

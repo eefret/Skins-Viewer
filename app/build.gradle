@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "com.marvinsyan.csgoskinsviewer"
+        applicationId "com.chrslee.csgopedia.app"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 14
@@ -28,6 +28,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'

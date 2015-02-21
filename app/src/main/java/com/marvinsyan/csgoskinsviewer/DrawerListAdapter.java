@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chrslee.csgopedia.app.R;
-
 /**
  * Created by Marvin on 2/11/2015.
  */

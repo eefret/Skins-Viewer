@@ -20,6 +20,16 @@
             android:entryValues="@array/currency_list_abbrv"
             android:key="custom_currency"
             android:title="Custom currency" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="appearance"
+        android:title="Appearance">
 
+        <com.marvinsyan.csgoskinsviewer.ListPreferenceShowSummary
+            android:defaultValue="light"
+            android:entries="@array/theme_list"
+            android:entryValues="@array/theme_list_values"
+            android:key="theme"
+            android:title="Theme" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -1,8 +1,10 @@
 package com.marvinsyan.csgoskinsviewer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.chrslee.csgopedia.app.R;
 
 import java.util.ArrayList;
 
@@ -23,8 +23,27 @@ public class ResultsActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        // Light/Dark theme
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLightTheme = prefs.getString("theme", "light").equals("light");
+        if (isLightTheme) {
+            setTheme(R.style.AppTheme_Base_Light);
+
+            // Needs to be after setTheme
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_results);
+
+            findViewById(R.id.app_bar_results).setBackgroundColor(
+                    getResources().getColor(R.color.colorPrimary));
+        } else {
+            setTheme(R.style.AppTheme_Base_Dark);
+
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_results);
+
+            findViewById(R.id.app_bar_results).setBackgroundColor(
+                    getResources().getColor(R.color.darkColorPrimary));
+        }
 
         // Show toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_results);
@@ -74,7 +93,6 @@ public class ResultsActivity extends ActionBarActivity {
             cursor.close();
         }
         mAdapter.addData(data);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
         // Raw string ("ak_47") -> R.string (R.string.ak_47) -> getString(R.string.ak_47)
         setTitle(getString(getResources().getIdentifier(skinOrCollectionName, "string", getPackageName())) + " Skins");
     }

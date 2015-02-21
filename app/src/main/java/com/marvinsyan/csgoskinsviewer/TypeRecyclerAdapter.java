@@ -3,15 +3,15 @@ package com.marvinsyan.csgoskinsviewer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.chrslee.csgopedia.app.R;
 
 import java.util.ArrayList;
 
@@ -33,6 +33,15 @@ public class TypeRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.list_item, parent, false);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean isLightTheme = prefs.getString("theme", "light").equals("light");
+        if (isLightTheme) {
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.cardview_light_background));
+        } else {
+            itemView.setBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
+        }
+
         return new RecyclerViewHolder(itemView);
     }
 

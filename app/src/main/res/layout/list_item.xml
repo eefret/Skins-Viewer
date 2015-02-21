@@ -1,81 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_card_view"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    card_view:cardCornerRadius="0dp"> <!-- temporarily 0dp until fixed -->
+    <!-- TODO: Corner radius doesn't get applied to TypeActivity and ResultsActivity -->
 
-    <ImageView
-        android:id="@+id/list_icon"
-        android:src="@drawable/ak_47_fire_serpent"
-        android:layout_width="?android:attr/listPreferredItemHeight"
+    <RelativeLayout
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:layout_gravity="center" />
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
-    <TextView
-        android:id="@+id/list_skin_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fire_serpent"
-        android:textSize="20sp"
-        android:padding="8dp"
-        android:gravity="center_vertical"
-        android:layout_gravity="center_vertical"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/list_icon"
-        android:layout_toEndOf="@id/list_icon" />
+        <ImageView
+            android:id="@+id/list_icon"
+            android:layout_width="?android:attr/listPreferredItemHeight"
+            android:layout_height="?android:attr/listPreferredItemHeight"
+            android:layout_gravity="center"
+            android:src="@drawable/ak_47_fire_serpent" />
 
-    <TextView
-        android:id="@+id/list_gun_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ak_47"
-        android:textSize="10sp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@id/list_icon"
-        android:layout_alignEnd="@id/list_icon"/>
+        <TextView
+            android:id="@+id/list_skin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_toEndOf="@id/list_icon"
+            android:layout_toRightOf="@id/list_icon"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:text="@string/fire_serpent"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/list_rarity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/covert"
-        android:textSize="13sp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/list_gun_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/list_icon"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@id/list_icon"
+            android:gravity="center"
+            android:text="@string/ak_47"
+            android:textSize="10sp" />
 
-    <TextView
-        android:id="@+id/list_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" | "
-        android:textSize="13sp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/list_rarity"
-        android:layout_toStartOf="@id/list_rarity" />
+        <TextView
+            android:id="@+id/list_rarity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/covert"
+            android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/list_collection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/operation_bravo_case"
-        android:textSize="13sp"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/list_divider"
-        android:layout_toStartOf="@id/list_divider" />
-    <TextView
-        android:id="@+id/list_special"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stattrak_available"
-        android:textSize="13sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@id/list_rarity"
-        android:layout_alignEnd="@id/list_rarity" />
+        <TextView
+            android:id="@+id/list_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/list_rarity"
+            android:layout_toStartOf="@id/list_rarity"
+            android:text=" | "
+            android:textSize="13sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/list_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/list_divider"
+            android:layout_toStartOf="@id/list_divider"
+            android:text="@string/operation_bravo_case"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/list_special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/list_rarity"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@id/list_rarity"
+            android:text="@string/stattrak_available"
+            android:textSize="13sp" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
