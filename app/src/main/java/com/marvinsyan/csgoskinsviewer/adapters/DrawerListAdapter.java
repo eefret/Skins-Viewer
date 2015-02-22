@@ -1,4 +1,4 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.marvinsyan.csgoskinsviewer.R;
 
 /**
  * Created by Marvin on 2/11/2015.
@@ -48,7 +50,7 @@ public class DrawerListAdapter extends BaseAdapter {
         View rowView = inflater.inflate(R.layout.drawer_item, null);
         holder.imageView = (ImageView) rowView.findViewById(R.id.drawer_list_icon);
         holder.textView = (TextView) rowView.findViewById(R.id.drawer_list_text);
-        holder.imageView.setImageResource(images[position]); // Get hardcoded images
+        holder.imageView.setImageResource(images[position]); // Get image name
         holder.textView.setText(titles[position]); // Get titles from strings.xml
         return rowView;
     }

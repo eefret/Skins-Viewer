@@ -1,4 +1,4 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.utils;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

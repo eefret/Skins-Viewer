@@ -13,7 +13,7 @@
             android:summary="Display currency based on your phone's locale"
             android:title="Auto-detection" />
 
-        <com.marvinsyan.csgoskinsviewer.ListPreferenceShowSummary
+        <com.marvinsyan.csgoskinsviewer.utils.ListPreferenceShowSummary
             android:defaultValue="USD"
             android:dependency="auto_detect_locale"
             android:entries="@array/currency_list"
@@ -25,7 +25,7 @@
         android:key="appearance"
         android:title="Appearance">
 
-        <com.marvinsyan.csgoskinsviewer.ListPreferenceShowSummary
+        <com.marvinsyan.csgoskinsviewer.utils.ListPreferenceShowSummary
             android:defaultValue="light"
             android:entries="@array/theme_list"
             android:entryValues="@array/theme_list_values"

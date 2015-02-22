@@ -429,5 +429,21 @@
 
     <!-- Quality labels for the CardView -->
     <string name="statrak_factory_new">StatTrak Factory New</string>
+    <string name="statrak_minimal_wear">StatTrak Minimal Wear</string>
+    <string name="statrak_field_tested">StatTrak Field-Tested</string>
+    <string name="statrak_well_worn">StatTrak Well-Worn</string>
+    <string name="statrak_battle_scarred">StatTrak Battle-Scarred</string>
+
+    <string name="souvenir_factory_new">Souvenir Factory New</string>
+    <string name="souvenir_minimal_wear">Souvenir Minimal Wear</string>
+    <string name="souvenir_field_tested">Souvenir Field-Tested</string>
+    <string name="souvenir_well_worn">Souvenir Well-Worn</string>
+    <string name="souvenir_battle_scarred">Souvenir Battle-Scarred</string>
+
+    <string name="factory_new">Factory New</string>
+    <string name="minimal_wear">Minimal Wear</string>
+    <string name="field_tested">Field-Tested</string>
+    <string name="well_worn">Well-Worn</string>
+    <string name="battle_scarred">Battle-Scarred</string>
 
 </resources>

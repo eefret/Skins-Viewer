@@ -1,9 +1,11 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
+import com.marvinsyan.csgoskinsviewer.R;
 
 public class SettingsActivity extends PreferenceActivity {
 

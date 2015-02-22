@@ -1,4 +1,4 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.utils;
 
 import android.content.Context;
 import android.database.Cursor;

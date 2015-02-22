@@ -1,4 +1,4 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.marvinsyan.csgoskinsviewer.R;
+import com.marvinsyan.csgoskinsviewer.SkinData;
+import com.marvinsyan.csgoskinsviewer.adapters.DrawerListAdapter;
+import com.marvinsyan.csgoskinsviewer.adapters.MainRecyclerAdapter;
+import com.marvinsyan.csgoskinsviewer.utils.DatabaseHelper;
 
 import java.util.ArrayList;
 

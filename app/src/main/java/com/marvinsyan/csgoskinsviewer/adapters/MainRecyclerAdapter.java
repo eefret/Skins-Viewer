@@ -1,4 +1,4 @@
-package com.marvinsyan.csgoskinsviewer;
+package com.marvinsyan.csgoskinsviewer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,23 +8,31 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.marvinsyan.csgoskinsviewer.R;
+import com.marvinsyan.csgoskinsviewer.RecyclerViewHolder;
+import com.marvinsyan.csgoskinsviewer.SkinData;
+import com.marvinsyan.csgoskinsviewer.activities.MainActivity;
+import com.marvinsyan.csgoskinsviewer.fragments.InfoDialogFragment;
 
 import java.util.ArrayList;
 
 /**
- * Created by Marvin on 2/15/2015.
+ * Created by Marvin on 2/12/2015.
  */
-public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class MainRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<SkinData> mSkinData = new ArrayList<>();
     private Context context;
     private final int IMAGE_DIMENS = 100; // Increase to improve image quality at the cost of performance
 
-    public ResultsRecyclerAdapter(Context context) {
+    public MainRecyclerAdapter(Context context) {
         this.context = context;
     }
 
@@ -36,9 +44,9 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean isLightTheme = prefs.getString("theme", "light").equals("light");
         if (isLightTheme) {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.cardview_light_background));
+            ((CardView) itemView).setCardBackgroundColor(context.getResources().getColor(R.color.cardview_light_background));
         } else {
-            itemView.setBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
+            ((CardView) itemView).setCardBackgroundColor(context.getResources().getColor(R.color.cardview_dark_background));
         }
 
         return new RecyclerViewHolder(itemView);
@@ -70,12 +78,12 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
         } else if (rarity.equals(context.getString(R.string.contraband))) {
             holder.rarity.setTextColor(Color.rgb(255, 165, 0)); // light orange
         } else if (rarity.equals(context.getString(R.string.no_rarity))) {
-            holder.rarity.setTextColor(Color.rgb(215,215,215)); // greyish
+            holder.rarity.setTextColor(Color.rgb(215, 215, 215)); // greyish
         }
 
         holder.collection.setText(context.getString(current.collectionId));
 
-        String special = context.getString(current.specialId);
+        final String special = context.getString(current.specialId);
         holder.special.setText(special);
         // Assign StatTrak/Souvenir colors
         if (special.equals(context.getString(R.string.stattrak_available))) {
@@ -87,12 +95,11 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
         holder.setClickListener(new RecyclerViewHolder.ClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent i = new Intent(context, ResultsActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
                 i.putExtra("weapon_name", current.gunNameId);
                 // TODO: Will affect market price lookup if language is not English
                 i.putExtra("skin_name", current.skinNameId);
-                Toast.makeText(context, "Picture and prices will be displayed in the next update.",
-                        Toast.LENGTH_SHORT).show();
+                showDialog();
             }
         });
     }
@@ -106,6 +113,7 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
     public int getItemCount() {
         return mSkinData.size();
     }
+
 
     /**
      * http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
@@ -146,8 +154,16 @@ public class ResultsRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        // Further improve memory usage
+        // http://stackoverflow.com/a/21394281/3505851
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         options.inDither = true;
         return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public void showDialog() {
+        FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
+        InfoDialogFragment overlay = new InfoDialogFragment();
+        overlay.show(manager, "FragmentDialog");
     }
 }

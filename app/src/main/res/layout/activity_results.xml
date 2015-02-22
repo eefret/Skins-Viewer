@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.marvinsyan.csgoskinsviewer.ResultsActivity">
+    tools:context="com.marvinsyan.csgoskinsviewer.activities.ResultsActivity">
 
     <include
         android:id="@+id/app_bar_results"
