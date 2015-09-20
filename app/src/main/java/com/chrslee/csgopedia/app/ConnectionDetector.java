@@ -11,6 +11,8 @@ public class ConnectionDetector {
         this._context = context;
     }
 
+    //this class just takes the Conectivity system Service and
+    //chek if the device is connected or not to the internet.
     public boolean isConnectedToInternet() {
         ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
