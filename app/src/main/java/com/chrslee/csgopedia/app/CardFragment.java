@@ -56,6 +56,10 @@ public class CardFragment extends Fragment {
         CardFragment f = new CardFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
+        //Taking the params in the constructor and passing them as args
+        //This is required while instantiating fragments because of the workflow
+        //basically fragments mimic a part of the activity workflow but can be instantiated
+        //instead of called by intents this merges both functionalities
         f.setArguments(b);
         return f;
     }
@@ -66,15 +70,19 @@ public class CardFragment extends Fragment {
         position = getArguments().getInt(ARG_POSITION);
         context = getActivity();
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //settings args passed from constructor as global fields
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //Looks like he did this layout via code this is a layoutparams object
+        //it defines the metrics and bounds of a specific view
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
+        //Creating a FrameLayout a FrameLayout is basically a empty container
         FrameLayout fl = new FrameLayout(context);
         fl.setLayoutParams(params);
+        //setting the params from above
 
         // First - image section
         LayoutParams imgParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
